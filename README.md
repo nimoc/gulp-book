@@ -66,10 +66,10 @@ gulp.task('script', function() {
 
 Gulp 还可以做很多事，例如：
 
-1. 编译SASS/LESS
-2. 编译CoffeeScript
-3. 压缩CSS
-4. 压缩图片
-5. 复制文件至指定目录
+1. 压缩CSS
+2. 压缩图片
+3. 编译SASS/LESS
+4. 编译CoffeeScript
+5. 编译 markdown 为 html
 
-[阅读下一章节：安装 Node 和 Gulp](chapter1.md)
+[开始阅读：安装 Node 和 Gulp](chapter1.md)
