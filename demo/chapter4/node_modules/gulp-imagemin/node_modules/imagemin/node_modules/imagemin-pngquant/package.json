@@ -1,0 +1,75 @@
+{
+  "name": "imagemin-pngquant",
+  "version": "4.0.0",
+  "description": "pngquant imagemin plugin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imagemin/imagemin-pngquant"
+  },
+  "author": {
+    "name": "Kevin Mårtensson",
+    "email": "kevinmartensson@gmail.com",
+    "url": "https://github.com/imagemin"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "compress",
+    "gulpplugin",
+    "image",
+    "imageminplugin",
+    "img",
+    "minify",
+    "optimize",
+    "png",
+    "pngquant"
+  ],
+  "dependencies": {
+    "is-png": "^1.0.0",
+    "pngquant-bin": "^2.0.0",
+    "through2": "^0.6.1"
+  },
+  "devDependencies": {
+    "ava": "^0.0.4",
+    "buffer-equal": "^0.0.1",
+    "vinyl-file": "^1.1.0"
+  },
+  "gitHead": "cccdf568d2b77cfc43620ab31fbacd0d88558e6e",
+  "bugs": {
+    "url": "https://github.com/imagemin/imagemin-pngquant/issues"
+  },
+  "homepage": "https://github.com/imagemin/imagemin-pngquant",
+  "_id": "imagemin-pngquant@4.0.0",
+  "_shasum": "b444166a9bf0c9319d9a14221ce4acf4db8e8292",
+  "_from": "imagemin-pngquant@^4.0.0",
+  "_npmVersion": "2.1.5",
+  "_nodeVersion": "0.10.32",
+  "_npmUser": {
+    "name": "kevva",
+    "email": "kevinmartensson@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "kevva",
+      "email": "kevinmartensson@gmail.com"
+    },
+    {
+      "name": "sindresorhus",
+      "email": "sindresorhus@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "b444166a9bf0c9319d9a14221ce4acf4db8e8292",
+    "tarball": "http://registry.npmjs.org/imagemin-pngquant/-/imagemin-pngquant-4.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/imagemin-pngquant/-/imagemin-pngquant-4.0.0.tgz"
+}

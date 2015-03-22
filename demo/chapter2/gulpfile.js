@@ -4,7 +4,7 @@ var gulp = require('gulp');
 // 获取 uglify 模块（用于压缩 JS）
 var uglify = require('gulp-uglify');
 
-// 压缩文件
+// 压缩 js 文件
 // 在命令行使用 gulp script 启动此任务
 gulp.task('script', function() {
     // 1. 找到文件
@@ -24,6 +24,4 @@ gulp.task('auto', function () {
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 script 任务和 auto 任务
-gulp.task('default', function(){
-    gulp.run('script', 'auto');
-});
+gulp.task('default', ['script', 'auto']);

@@ -11,7 +11,9 @@ Gulp 是基于 node 实现 Web 前端自动化开发的工具，利用它能够�
 
 1. [安装 Node 和 Gulp](chapter1.md)
 2. [使用 Gulp 压缩 JS](chapter2.md)
-3. [使用 Gulp 编译 Sass](chapter3.md)
+3. [使用 Gulp 压缩 CSS](chapter3.md)
+4. [使用 Gulp 压缩图片](chapter4.md)
+5. [使用 Gulp 编译 LESS](chapter5.md)
 
 压缩JS文件的规律和 Gulp 代码
 ------------------------
