@@ -23,7 +23,7 @@ npm install gulp-less
 
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter5)
 
-```
+```js
 // 获取 gulp
 var gulp = require('gulp');
 // 获取 gulp-less 模块
@@ -57,7 +57,7 @@ LESS 代码和编译后的CSS代码
 
 [less/a.less](https://github.com/nimojs/gulp-book/tree/master/demo/chapter5/less/a.less)
 
-```
+```css
 .less{
 	a{
         color:pink;
@@ -67,7 +67,7 @@ LESS 代码和编译后的CSS代码
 [less/import.less](https://github.com/nimojs/gulp-book/tree/master/demo/chapter5/less/import.less)
 
 
-```
+```css
 @import "a.less";
 .import{
 	a{
@@ -77,14 +77,14 @@ LESS 代码和编译后的CSS代码
 ```
 [less/a.css](https://github.com/nimojs/gulp-book/tree/master/demo/chapter5/dist/css/a.css)
 
-```
+```css
 .less a {
   color: pink;
 }
 ```
 [less/import.css](https://github.com/nimojs/gulp-book/tree/master/demo/chapter5/dist/css/import.css)
 
-```
+```css
 .less a {
   color: pink;
 }

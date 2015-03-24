@@ -89,7 +89,7 @@ gulp.task('default', ['css', 'auto']);
 
 在 `gulpfile.js` 对应目录创建 `css` 文件夹，并在 `css/` 目录下创建 `a.css` 文件。
 
-```
+```css
 /* a.css */
 body a{
     color:pink;
