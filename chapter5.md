@@ -1,10 +1,10 @@
-使用 Gulp 编译 LESS
+使用 gulp 编译 LESS
 ================
 
 请务必理解如下章节后阅读此章节：
 
-1. [安装 Node 和 Gulp](chapter1.md)
-2. [使用 Gulp 压缩 JS](chapter2.md)
+1. [安装 Node 和 gulp](chapter1.md)
+2. [使用 gulp 压缩 JS](chapter2.md)
 
 ----------
 
@@ -92,4 +92,4 @@ LESS 代码和编译后的CSS代码
   color: red;
 }
 ```
-[阅读下一章节：使用 Gulp 编译 SASS](chapter6.md)
+[阅读下一章节：使用 gulp 编译 SASS](chapter6.md)

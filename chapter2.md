@@ -1,22 +1,22 @@
-使用 Gulp 压缩 JS
+使用 gulp 压缩 JS
 ================
 
 请务必理解如下章节后阅读此章节：
 
-1. [安装 Node 和 Gulp](chapter1.md)
+1. [安装 Node 和 gulp](chapter1.md)
 
 ----------
 
 压缩 js 代码可降低 js 文件大小，提高页面打开速度。在不利用 gulp 时我们需要通过各种工具手动完成压缩工作。
 
-所有的 Gulp 代码编写都可以看做是将规律转化为代码的过程。
+所有的 gulp 代码编写都可以看做是将规律转化为代码的过程。
 
 规律
 ---
 
 找到 `js/` 目录下的所有 js 文件，压缩它们，将压缩后的文件存放在 `dist/js/` 目录下。
 
-Gulp 代码
+gulp 代码
 ----
 
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter2)
@@ -186,7 +186,7 @@ gulp.task('auto', function () {
 
 至此，我们完成了 gulp 压缩 js 文件的自动化代码编写。
 
-**注意：**使用 `gulp.watch` 后你的命令行会进入“运行”状态，此时你不可以在命令行进行其他操作。可通过 `Ctrl + C` 停止 gulp。
+**注意：**使用 `gulp.watch` 后你的命令行会进入“运行”状态，此时你不可以在命令行进行其他操作。可通过 `Ctrl + C` 停止 gulp。(Mac 中使用 `control + C`)
 
 > Mac 下使用 `control + C` 停止 gulp
 
@@ -232,9 +232,9 @@ gulp.task('auto', function () {
 gulp.task('default', ['script', 'auto']);
 ```
 
-去除注释后，你会发现只需要 11 行代码就可以让 Gulp 自动监听 js 文件的修改后压缩代码。
+去除注释后，你会发现只需要 11 行代码就可以让 gulp 自动监听 js 文件的修改后压缩代码。
 
 
 你可以访问 [gulp-uglify](https://github.com/terinjokes/gulp-uglify) 以查看更多用法。
 
-[阅读下一章节：使用 Gulp 压缩 CSS](chapter3.md)
+[阅读下一章节：使用 gulp 压缩 CSS](chapter3.md)

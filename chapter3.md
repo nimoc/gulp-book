@@ -1,10 +1,10 @@
-使用 Gulp 压缩 CSS
+使用 gulp 压缩 CSS
 ================
 
 请务必理解如下章节后阅读此章节：
 
-1. [安装 Node 和 Gulp](chapter1.md)
-2. [使用 Gulp 压缩 JS](chapter2.md)
+1. [安装 Node 和 gulp](chapter1.md)
+2. [使用 gulp 压缩 JS](chapter2.md)
 
 ----------
 
@@ -17,12 +17,12 @@
 ---
 找到 `css/` 目录下的所有 css 文件，压缩它们，将压缩后的文件存放在 `dist/css/` 目录下。
 
-Gulp 代码
+gulp 代码
 ---------
 
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter3)
 
-当熟悉 [使用 Gulp 压缩 JS](chapter2.md) 的方法后，编写压缩 CSS 的 Gulp 代码编写就变得很轻松。
+当熟悉 [使用 gulp 压缩 JS](chapter2.md) 的方法后，编写压缩 CSS 的 gulp 代码编写就变得很轻松。
 
 
 **一、安装 gulp-minify-css** 模块
@@ -47,7 +47,7 @@ gulp-minify-css@1.0.0 node_modules/gulp-minify-css
 └── gulp-util@3.0.4 (array-differ@1.0.0, beeper@1.0.0, array-uniq@1.0.2, lodash._reescape@3.0.0, lodash._reinterpolate@3.0.0, lodash._reevaluate@3.0.0, replace-ext@0.0.1, minimist@1.1.1, multipipe@0.1.2, vinyl@0.4.6, chalk@1.0.0, lodash.template@3.3.2, dateformat@1.0.11)
 ```
 
-**二、参照 [使用 Gulp 压缩 JS](chapter2.md) 创建 `gulpfile.js` 文件编写代码**
+**二、参照 [使用 gulp 压缩 JS](chapter2.md) 创建 `gulpfile.js` 文件编写代码**
 
 在对应目录创建 `gulpfile.js` 文件并写入如下内容：
 
@@ -117,4 +117,4 @@ gulp
 
 gulp 会创建 `dist/css` 目录，并创建 `a.css` 文件，此文件存放压缩后的 css 代码。
 
-[阅读下一章节：使用 Gulp 压缩图片](chapter4.md)
+[阅读下一章节：使用 gulp 压缩图片](chapter4.md)

@@ -1,10 +1,10 @@
-使用 Gulp 压缩图片
+使用 gulp 压缩图片
 ================
 
 请务必理解如下章节后阅读此章节：
 
-1. [安装 Node 和 Gulp](chapter1.md)
-2. [使用 Gulp 压缩 JS](chapter2.md)
+1. [安装 Node 和 gulp](chapter1.md)
+2. [使用 gulp 压缩 JS](chapter2.md)
 
 ----------
 
@@ -14,9 +14,9 @@
 
 规律
 ---
-找到 `images/` 目录下的所有 `.jpeg .jpg .png .gif` 文件，压缩它们，将压缩后的文件存放在 `dist/images/` 目录下。
+找到 `images/` 目录下的所有文件，压缩它们，将压缩后的文件存放在 `dist/images/` 目录下。
 
-Gulp 代码
+gulp 代码
 ---------
 
 你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter4)
@@ -60,7 +60,7 @@ var imagemin = require('gulp-imagemin');
 // 在命令行输入 gulp images 启动此任务
 gulp.task('images', function () {
     // 1. 找到图片
-    gulp.src('images/*.+(jpge|jpg|png|gif)')
+    gulp.src('images/*.*')
     // 2. 压缩图片
         .pipe(imagemin({
             progressive: true
@@ -72,7 +72,7 @@ gulp.task('images', function () {
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 images 任务
-    gulp.watch('images/*.+(jpge|jpg|png|gif)', ['images']);
+    gulp.watch('images/*.*', ['images']);
 });
 
 // 使用 gulp.task('default') 定义默认任务
@@ -111,4 +111,4 @@ gulp
 [18:10:42] gulp-imagemin: Minified 3 images (saved 25.83 kB - 5.2%)
 ```
 
-[阅读下一章节：使用 Gulp 编译 LESS](chapter5.md)
+[阅读下一章节：使用 gulp 编译 LESS](chapter5.md)
