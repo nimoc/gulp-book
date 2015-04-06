@@ -3,6 +3,8 @@
 
 请务必理解前面的章节后阅读此章节：
 
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/16)
+
 ----------
 
 本章将介绍
@@ -83,7 +85,11 @@ npm install gulp --save-dev
 
 声明此项目的开发依赖 gulp
 
-接着安装其他依赖：(安装模块较多，请耐心等待，若一直安装失败可使用[npm.taobao.org](http://npm.taobao.org/)）
+接着安装其他依赖：
+
+> 安装模块较多，请耐心等待，若一直安装失败可使用[npm.taobao.org](http://npm.taobao.org/)
+
+
 ```
 npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-minify-css gulp-autoprefixer gulp-less gulp-ruby-sass gulp-imagemin  --save-dev
 ```
@@ -104,7 +110,7 @@ npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps 
 }
 ```
 
-这样你就不需要将 `node_modules/` 发送给同事，你的同事只需在命令行输入
+当你将这份 gulpfile.js 配置分享给你的朋友时，就不需要将 `node_modules/` 发送给他，他只需在命令行输入
 ```
 npm install
 ```
@@ -131,7 +137,6 @@ npm install
 	├── css/     *.css  文件
 	├── js/      *.js 文件
 	├── fonts/   字体文件
-	├── media/   *.swf等文件
     └── images/   图片
 └── dist/
 ```
@@ -531,111 +536,56 @@ gulp.task('minifycss', function () {
 
 在命令行输入 `gulp minifyss` 以压缩 `src/css/` 下的所有 .css 文件并复制到 `dist/css` 目录下
 
-未完待续..
-
-<!--
 配置 Less 任务
 ------------
-Less 的任务只需在 css 任务的基础上增加一个 `pipe(less())` ，并改变 watch的路径。
+参考配置 JavaScript 任务的方式配置 less 任务
 
-```
-// less 任务
+```js
+var less = require('gulp-less')
+
 gulp.task('watchless', function () {
     gulp.watch('src/less/**/*.less', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
-        /*
-        path = {  srcPath: 'src/less/less.less',
-                  srcDir: 'src/less/',
-                  distPath: 'dist/css/less.css',
-                  distDir: 'dist/css/',
-                  filename: 'less.less' }
-        */
-        console.log(' ')
-        console.log(event.type + ':' + path.srcPath)
-        console.log('dist:' + path.distPath)
+        var paths = watchPath(event, 'src/', 'dist/')
 
-                // src/css/css-1.css
-        gulp.src(path.srcPath)
-            .pipe(sourcemaps.init())
-            .pipe(less())
-            .pipe(minifycss())
-            .pipe(autoprefixer({
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
+        var combined = combiner.obj([
+            gulp.src(paths.srcPath),
+            sourcemaps.init(),
+            autoprefixer({
               browsers: 'last 2 versions'
-            }))
-            .pipe(sourcemaps.write('./'))
-            // src/css/
-            .pipe(gulp.dest(path.distDir))
+            }),
+            less(),
+            minifycss(),
+            sourcemaps.write('./'),
+            gulp.dest(paths.distDir)
+        ])
+        combined.on('error', handleError)
     })
+})
+
+gulp.task('lesscss', function () {
+    var combined = combiner.obj([
+            gulp.src('src/less/**/*.less'),
+            sourcemaps.init(),
+            autoprefixer({
+              browsers: 'last 2 versions'
+            }),
+            less(),
+            minifycss(),
+            sourcemaps.write('./'),
+            gulp.dest('dist/css/')
+        ])
+    combined.on('error', handleError)
 })
 
 gulp.task('default', ['watchjs', 'watchcss', 'watchless'])
 ```
-在命令行输入 gulp 启动 watchless 任务。
-```
-gulp
-```
-
-如果将 .less 文件内容是 `abcde` 这种错误的语法，编译时会导致 gulp 终止运行。
-
-参照 js 任务改写代码，加上 `combiner`。
-
-```js
-var combined = combiner.obj([
-            gulp.src(path.srcPath), // src/less/less.less
-            sourcemaps.init(),
-            less(),
-            minifycss(),
-            autoprefixer({
-              browsers: 'last 2 versions'
-            }),
-            sourcemaps.write('./'),
-            gulp.dest(path.distDir) // dist/css/
-        ]);
-        combined.on('error', function (err) {
-            console.log(' ')
-            console.log(colors.error('Error'))
-            console.log('fileName: ' + colors.error(err.fileName))
-            console.log('lineNumber: ' + colors.error(err.lineNumber))
-            console.log('message: ' + err.message)
-            console.log('plugin: ' + colors.info(err.plugin))
-        })
-```
-
-此时当将 `src/less/less.less` 内容保存为 `abcde` 时候，会在控制台出现错误提示，而 gulp 不会终止。
-
-接着编写 lesscss 任务
-
-```js
-gulp.task('lesscss', function () {
-    var combined = combiner.obj([
-        gulp.src('src/less/**/*.less'), // src/less/less.less
-        sourcemaps.init(),
-        less(),
-        minifycss(),
-        autoprefixer({
-          browsers: 'last 2 versions'
-        }),
-        sourcemaps.write('./'),
-        gulp.dest('dist/css/')
-    ]);
-    combined.on('error', function (err) {
-        console.log(' ')
-        console.log(colors.error('Error'))
-        console.log('fileName: ' + colors.error(err.fileName))
-        console.log('lineNumber: ' + colors.error(err.lineNumber))
-        console.log('message: ' + err.message)
-        console.log('plugin: ' + colors.info(err.plugin))
-    })
-})
-```
-
-在命令输入 `gulp lesscss` 编译 `src/less/` 目录下的所有 `.less`后缀文件。
-
 
 配置 Sass 任务
 -------------
 
-Sass 的配置比较简单。
+ruby-sass 的配置比较简单。
 
 ```js
 gulp.task('sasscss', function () {
@@ -656,37 +606,26 @@ gulp.task('watchsass',function () {
     gulp.watch('src/sass/**/*.scss', ['sasscss']);
 })
 
-gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchremind'])
+gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchsass'])
 ```
-
-命令行输入 `gulp` 启动检测文件编译
-
-输入 `gulp sasscss` 编译 `src/sass/` 下的所有文件
 
 配置 image 任务
 ----------
+var imagemin = require('gulp-imagemin')
 
 ```js
 gulp.task('watchimage', function () {
     gulp.watch('src/images/**/*', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
-        /*
-        path = {  srcPath: 'src/images/loading.gif',
-                  srcDir: 'src/images/',
-                  distPath: 'dist/images/loading.gif',
-                  distDir: 'dist/images/',
-                  filename: 'loading.gif' }
-        */
-        var sNow = now();
-        console.log('\n')
-        console.log(sNow + ' ' + colors.info(event.type) + ':' + path.srcPath)
-        console.log(sNow + ' ' + 'dist:' + path.distPath)
+        var paths = watchPath(event,'src/','dist/')
 
-        gulp.src(path.srcPath)
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
+
+        gulp.src(paths.srcPath)
             .pipe(imagemin({
                 progressive: true
             }))
-            .pipe(gulp.dest(path.distDir))
+            .pipe(gulp.dest(paths.distDir))
     })
 })
 
@@ -697,15 +636,40 @@ gulp.task('image', function () {
         }))
         .pipe(gulp.dest('dist/images'))
 })
-
-gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchimage', 'watchremind'])
 ```
 
 配置文件复制任务
 -----------
 复制 `src/fonts/` 文件到 `dist/` 中
 
+```js
+gulp.task('watchcopy', function () {
+    gulp.watch('src/fonts/**/*', function (event) {
+        var paths = watchPath(event)
 
--->
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('copy:' + paths.distPath)
 
-[你还想学习什么关于 gulp 的知识？告诉我们！](https://github.com/nimojs/gulp-book/issues/8)
+        gulp.src(paths.srcPath)
+            .pipe(gulp.dest(paths.distDir))
+    })
+})
+
+gulp.task('copy', function () {
+    gulp.src('src/fonts/**/*')
+        .pipe(gulp.dest('dist/fonts/'))
+})
+
+gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchimage', 'watchcopy'])
+```
+
+结语
+--------
+
+[完整代码](https://github.com/nimojs/gulp-demo/tree/master/gulpfile.js)
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/16)
+
+你还想了解什么关于 gulp 的什么知识？ [告诉我们](https://github.com/nimojs/gulp-book/issues/8)
+
+后续还会又新章节更新。你可以[订阅本书](https://github.com/nimojs/gulp-book/issues/7) 当有新章节发布时，我们会通过邮件告诉你
