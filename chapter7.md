@@ -23,10 +23,10 @@ package.json
 
 如果你熟悉 npm 则可以利用 `package.json` 保存所有 `npm install --save-dev gulp-xxx` 模块依赖和模块版本。
 
-在命令行输入（此后 `$` 前缀用于表示是在命令行中的操作）
+在命令行输入
 
 ```
-$ npm init
+npm init
 ```
 
 会依次要求补全项目信息，不清楚的可以直接回车跳过
@@ -70,7 +70,7 @@ Is this ok? (yes)
 
 安装 gulp 到项目（防止全局 gulp 升级后与此项目 `gulpfile.js` 代码不兼容）
 ```
-$ npm install gulp --save-dev
+npm install gulp --save-dev
 ```
 
 此时打开 `package.json` 会发现多了如下代码
@@ -85,9 +85,30 @@ $ npm install gulp --save-dev
 
 接着安装其他依赖：(安装模块较多，请耐心等待，若一直安装失败可使用[npm.taobao.org](http://npm.taobao.org/)）
 ```
-$ npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-minify-css gulp-autoprefixer gulp-less gulp-ruby-sass gulp-imagemin  --save-dev
+npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-minify-css gulp-autoprefixer gulp-less gulp-ruby-sass gulp-imagemin  --save-dev
+```
+此时，[package.json](https://github.com/nimojs/gulp-demo/blob/master/package.json) 将会更新
+```js
+"devDependencies": {
+    "colors": "^1.0.3",
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-imagemin": "^2.2.1",
+    "gulp-less": "^3.0.2",
+    "gulp-minify-css": "^1.0.0",
+    "gulp-ruby-sass": "^1.0.1",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-uglify": "^1.1.0",
+    "gulp-watch-path": "0.0.1",
+    "stream-combiner2": "^1.0.2"
+}
 ```
 
+这样你就不需要将 `node_modules/` 发送给同事，你的同事只需在命令行输入
+```
+npm install
+```
+就可以检测 `package.json` 中的 `devDependencies` 并安装所有依赖。
 
 设计目录结构
 ----------
@@ -115,7 +136,63 @@ $ npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemap
 └── dist/
 ```
 
-由开发者自己决定使用 LESS 、 SASS 或直接编写 CSS。
+你可以点击 [nimojs/gulp-demo](https://github.com/nimojs/gulp-demo/archive/master.zip) 下载本章代码。
+
+让命令行输出的文字带颜色
+-------------------
+gulp 自带的输出都带时间和颜色，这样很容易识别。我们利用 [colors](https://www.npmjs.com/package/colors) 实现同样的效果。
+
+```js
+var gulp = require('gulp')
+var colors = require('colors')
+
+colors.setTheme({
+    silly: 'rainbow',
+    input: 'grey',
+    verbose: 'cyan',
+    prompt: 'grey',
+    info: 'green',
+    data: 'grey',
+    help: 'cyan',
+    warn: 'yellow',
+    debug: 'blue',
+    error: 'red'
+})
+
+gulp.task('default', function () {
+	console.log(colors.info('message'))
+	console.log(colors.error('error message'))
+})
+```
+使用 `gulp` 启动任务后会看见绿色的 `message` 和红色的 `error message`。
+
+---------
+我们还需要输出当前的时间
+
+```js
+var log = function (msg) {
+    // 14:13:55 GMT+0800 (CST)
+    var now = new Date().toTimeString().replace(/\s.*$/, '')
+    var now =  '[' + colors.data(now) + ']'
+    // [10:52:18]
+    console.log(now + ' ' + msg)
+}
+
+gulp.task('default', function () {
+    log('change some file')
+    log(colors.error('error message:') + ' text')
+})
+```
+将会在控制台输出：
+```
+[13:41:55] Using gulpfile ~/Documents/code/gulp-demo/gulpfile.js
+[13:41:55] Starting 'default'...
+[13:41:55] !!!change some file
+[13:41:55] !!!error message: text
+[13:41:55] Finished 'default' after 402 μs
+```
+
+[logtime 完整代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter7/logtime.js)
 
 配置 JS 任务
 --------
@@ -123,17 +200,16 @@ $ npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemap
 检测`src/js/`目录下的 js 文件修改后，压缩 `js/` 中所有 js 文件并输出到 `dist/css/` 中
 
 ```js
-var gulp = require('gulp');
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglify')
 
-gulp.task('js', function () {
+gulp.task('uglifyjs', function () {
     gulp.src('src/js/**/*.js')
         .pipe(uglify())
         .pipe(gulp.dest('dist/js'))
 })
 
 gulp.task('default', function () {
-    gulp.watch('src/js/**/*.js', ['js']);
+    gulp.watch('src/js/**/*.js', ['uglifyjs'])
 })
 ```
 
@@ -145,7 +221,9 @@ gulp.task('default', function () {
 [20:39:50] Starting 'default'...
 [20:39:50] Finished 'default' after 13 ms
 ```
-此时编辑 [src/js/log.js](https://github.com/nimojs/gulp-demo/src/js/log.js) 文件并保存，命令行会出现如下消息，表示检测到 `src/js/**/*.js` 文件修改后重新编译所有 js。
+
+
+此时编辑 [src/js/log.js](https://github.com/nimojs/gulp-demo/blob/master/src/js/log.js) 文件并保存，命令行会出现如下消息，表示检测到 `src/js/**/*.js` 文件修改后重新编译所有 js。
 
 ```ruby
 [20:39:52] Starting 'js'...
@@ -153,9 +231,9 @@ gulp.task('default', function () {
 ```
 
 ### gulp-watch-path
-此配置有个性能问题，当 `gulp.watch` 到 `src/js/` 目录下的js文件有修改时他会讲所有文件全部编译。实际上我们只需要重新编译被修改的文件。
+此配置有个性能问题，当 `gulp.watch` 到 `src/js/` 目录下的js文件有修改时会将所有文件全部编译。实际上我们只需要重新编译被修改的文件。
 
-此处介绍一下 `gulp.watch` 第二个参数为 `function` 时的用法。
+简单介绍 `gulp.watch` 第二个参数为 `function` 时的用法。
 
 ```js
 gulp.watch('src/js/**/*.js', function (event) {
@@ -172,47 +250,68 @@ gulp.watch('src/js/**/*.js', function (event) {
 });
 ```
 
-我们可以利用 `event` 检测到某个 js 文件被修改时，只编写当前修改的 js 文件。
+我们可以利用 `event`给到的信息，检测到某个 js 文件被修改时，只编写当前修改的 js 文件。
 
 可以利用 `gulp-watch-path` 配合 `event` 获取编译路径和输出路径。
 
 ```js
-gulp.task('watchjs', function () {
-    // 编译 JS
-    gulp.watch('src/js/**/*.js', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
-        /*
-        path = {  srcPath: 'src/js/log.js',
-                  srcDir: 'src/js/',
-                  distPath: 'dist/js/log.js',
-                  distDir: 'dist/js/',
-                  filename: 'log.js' }
-        */
-        console.log('\r')
-        console.log(event.type + ':' + path.srcPath)
-        console.log('dist:' + path.distPath)
+var watchPath = require('gulp-watch-path')
 
-        gulp.src(path.srcPath)
+gulp.task('watchjs', function () {
+    gulp.watch('src/js/**/*.js', function (event) {
+        var paths = watchPath(event, 'src/', 'dist/')
+        /*
+        paths
+            { srcPath: 'src/js/log.js',
+              srcDir: 'src/js/',
+              distPath: 'dist/js/log.js',
+              distDir: 'dist/js/',
+              srcFilename: 'log.js',
+              distFilename: 'log.js' }
+        */
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
+
+        gulp.src(paths.srcPath)
             .pipe(uglify())
-            .pipe(gulp.dest(path.distDir))
-    });
+            .pipe(gulp.dest(paths.distDir))
+    })
 })
 
 gulp.task('default', ['watchjs'])
 ```
 
-此时编辑 [src/js/log.js](https://github.com/nimojs/gulp-demo/src/js/log.js) 文件并保存，命令行会出现如下消息，表示检测到 `src/js/log.js` 文件修改后只重新编译 `log.js`。
+[use-gulp-watch-path 完整代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter7/use-gulp-watch-path.js)
+
+**`watchPath(event, search, replace, distExt)`**
+
+| 参数 | 说明 |
+|--------|--------|
+|    event    |`gulp.watch` 回调函数的 `event`|
+|    search   |需要被替换的字符串（此处被转换为正则 `/^src\//`）|
+|    replace  |第三个参数是新的的字符串|
+|   distExt   |扩展名(非必填)|
+
+
+此时编辑 [src/js/log.js](https://github.com/nimojs/gulp-demo/blob/master/src/js/log.js) 文件并保存，命令行会出现消息，表示检测到 `src/js/log.js` 文件修改后只重新编译 `log.js`。
+
+```
+[14:26:50] changed:src/js/log.js
+[14:26:50] dist:dist/js/log.js
+```
+
+你可以访问 [gulp-watch-path](https://github.com/nimojs/gulp-watch-path) 了解更多。
 
 ### stream-combiner2
 
-可是编辑 `log.js` 文件时，如果文件中有 js 语法错误时，gulp会终止运行并报错。
+编辑 `log.js` 文件时，如果文件中有 js 语法错误时，gulp 会终止运行并报错。
 
 当 log.js 缺少 `)`
 ```js
 log('gulp-book'
 ```
 
-并保存文件时出现如下错误，但是错误信息不全面
+并保存文件时出现如下错误，但是错误信息不全面。而且还会让 gulp 停止运行。
 
 ```
 events.js:85
@@ -228,45 +327,48 @@ js_error (/Users/nimojs/Documents/code/gulp-book/demo/chapter7/node_modules/gulp
 
 ```
 
-应对这种情况，我们可以使用 [Combining streams to handle errors](https://github.com/gulpjs/gulp/blob/master/docs/recipes/combining-streams-to-handle-errors.md) 文档中的 [stream-combiner2](https://github.com/substack/stream-combiner2)  捕获错误信息。
-
+应对这种情况，我们可以使用 [Combining streams to handle errors](https://github.com/gulpjs/gulp/blob/master/docs/recipes/combining-streams-to-handle-errors.md) 文档中推荐的 [stream-combiner2](https://github.com/substack/stream-combiner2)  捕获错误信息。
 
 ```js
+var handleError = function (err) {
+	console.log('\n')
+    log(colors.error('Error!'))
+    log('fileName: ' + colors.error(err.fileName))
+    log('lineNumber: ' + colors.error(err.lineNumber))
+    log('message: ' + err.message)
+    log('plugin: ' + colors.info(err.plugin))
+}
+var combiner = require('stream-combiner2')
+
 gulp.task('watchjs', function () {
-    // 编译 JS
     gulp.watch('src/js/**/*.js', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
+        var paths = watchPath(event, 'src/', 'dist/')
         /*
-        path = {  srcPath: 'src/js/log.js',
-                  srcDir: 'src/js/',
-                  distPath: 'dist/js/log.js',
-                  distDir: 'dist/js/',
-                  filename: 'log.js' }
+        paths
+            { srcPath: 'src/js/log.js',
+              srcDir: 'src/js/',
+              distPath: 'dist/js/log.js',
+              distDir: 'dist/js/',
+              srcFilename: 'log.js',
+              distFilename: 'log.js' }
         */
-        console.log('\r')
-        console.log(event.type + ':' + path.srcPath)
-        console.log('dist:' + path.distPath)
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
 
         var combined = combiner.obj([
-            gulp.src(path.srcPath), // src/js/log.js
+            gulp.src(paths.srcPath),
             uglify(),
-            gulp.dest(path.distDir) // dist/js/
-        ]);
-        combined.on('error', function (err) {
-          console.log('--------------')
-          console.log(colors.error('Error'))
-          console.log('fileName: ' + colors.error(err.fileName))
-          console.log('lineNumber: ' + colors.error(err.lineNumber))
-          console.log('message: ' + err.message)
-          console.log('plugin: ' + colors.info(err.plugin))
-        })
-    });
-})
+            gulp.dest(paths.distDir)
+        ])
 
-gulp.task('default', ['watchjs'])
+        combined.on('error', handleError)
+    })
+})
 ```
 
-此时当编译错误的语法时，命令行会出现如下提示：
+[watchjs-1 完整代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter7/watchjs-1.js)
+
+此时当编译错误的语法时，命令行会出现错误提示。而且不会让 gulp 停止运行。
 
 ```
 changed:src/js/log.js
@@ -278,7 +380,6 @@ lineNumber: 7
 message: /Users/nimojs/Documents/code/gulp-book/demo/chapter7/src/js/log.js: Unexpected token eof «undefined», expected punc «,»
 plugin: gulp-uglify
 ```
-
 
 ### gulp-sourcemaps
 
@@ -300,69 +401,42 @@ var log=function(o){console.log("--------"),console.log(o),console.log("--------
 压缩后的代码不存在换行符和空白符，导致出错后很难调试，好在我们可以使用 [sourcemap](http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html) 帮助调试
 
 ```js
-// 改写代码
-gulp.task('watchjs', function () {
-    // 编译 JS
-    gulp.watch('src/js/**/*.js', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
-        /*
-        path = {  srcPath: 'src/js/log.js',
-                  srcDir: 'src/js/',
-                  distPath: 'dist/js/log.js',
-                  distDir: 'dist/js/',
-                  filename: 'log.js' }
-        */
-        console.log('\r')
-        console.log(event.type + ':' + path.srcPath)
-        console.log('dist:' + path.distPath)
-
-        var combined = combiner.obj([
-            gulp.src(path.srcPath), // src/js/log.js
-            sourcemaps.init(),
-            uglify(),
-            sourcemaps.write('./'),
-            gulp.dest(path.distDir) // dist/js/
-        ]);
-        combined.on('error', function (err) {
-            console.log('--------------')
-            console.log(colors.error('Error'))
-            console.log('fileName: ' + colors.error(err.fileName))
-            console.log('lineNumber: ' + colors.error(err.lineNumber))
-            console.log('message: ' + err.message)
-            console.log('plugin: ' + colors.info(err.plugin))
-        })
-    });
-})
+var sourcemaps = require('gulp-sourcemaps')
+// ...
+var combined = combiner.obj([
+    gulp.src(paths.srcPath),
+    sourcemaps.init(),
+    uglify(),
+    sourcemaps.write('./'),
+    gulp.dest(paths.distDir)
+])
+// ...
 ```
+
+[watchjs-2 完整代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter7/watchjs-1.js)
 
 此时 `dist/js/` 中也会生成对应的 `.map` 文件，以便使用 Chrome 控制台调试代码 [在线文件示例：src/js/](https://github.com/nimojs/gulp-demo/blob/master/src/js/)
 
+-----
+
 至此，我们完成了检测文件修改后压缩 JS 的 gulp 任务配置。
 
-但有时我们需要编译所有 js 文件。可以配置 `uglifyjs` 任务。
+有时我们也需要一次编译所有 js 文件。可以配置 `uglifyjs` 任务。
 
 ```js
 gulp.task('uglifyjs', function () {
-  // 编译 JS
-  var combined = combiner.obj([
-      gulp.src('src/js/**/*.js'),
-      sourcemaps.init(),
-      uglify(),
-      sourcemaps.write('./'),
-      gulp.dest('dist/js/')
-  ]);
-  combined.on('error', function (err) {
-      console.log('--------------')
-      console.log(colors.error('Error'))
-      console.log('fileName: ' + colors.error(err.fileName))
-      console.log('lineNumber: ' + colors.error(err.lineNumber))
-      console.log('message: ' + err.message)
-      console.log('plugin: ' + colors.info(err.plugin))
-  })
+    var combined = combiner.obj([
+        gulp.src('src/js/**/*.js'),
+        sourcemaps.init(),
+        uglify(),
+        sourcemaps.write('./'),
+        gulp.dest('dist/js/')
+    ])
+    combined.on('error', handleError)
 })
 ```
 
-此时，你可以通过在 命令行输入 `gulp uglifyjs` 以压缩 `src/js/` 下的所有 js 文件。
+在命令行输入 `gulp uglifyjs` 以压缩 `src/js/` 下的所有 js 文件。
 
 配置 CSS 任务
 -------
@@ -374,49 +448,25 @@ gulp.task('uglifyjs', function () {
 按照本章中压缩 JS 的方式，先编写 `watchcss` 任务
 
 ```js
-// 检测文件修改后压缩 css
+var minifycss = require('gulp-minify-css')
+
 gulp.task('watchcss', function () {
     gulp.watch('src/css/**/*.css', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
-        /*
-        path = {  srcPath: 'src/css/css-1.css',
-                  srcDir: 'src/css/',
-                  distPath: 'dist/css/css-1.css',
-                  distDir: 'dist/css/',
-                  filename: 'css-1.css' }
-        */
-        console.log('\r')
-        console.log(event.type + ':' + path.srcPath)
-        console.log('dist:' + path.distPath)
+        var paths = watchPath(event, 'src/', 'dist/')
 
-                // src/css/css-1.css
-        gulp.src(path.srcPath)
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
+
+        gulp.src(paths.srcPath)
             .pipe(sourcemaps.init())
             .pipe(minifycss())
             .pipe(sourcemaps.write('./'))
-            // dist/js/
-            .pipe(gulp.dest(path.distDir))
+            .pipe(gulp.dest(paths.distDir))
     })
 })
 
 gulp.task('default', ['watchjs','watchcss'])
 ```
-
-在命令行输入 `gulp` 启动 `watchcss`
-
-然后编写 `minifycss` 任务
-
-```js
-// 压缩 css
-gulp.task('minifycss', function () {
-      gulp.src('src/css/**/*.css')
-      .pipe(sourcemaps.init())
-      .pipe(minifycss())
-      .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('dist/css/'))
-})
-```
-在命令行输入 `gulp minifycss` 以编译 `src/css/` 下的所有 css 文件。
 
 ### gulp-autoprefixer
 
@@ -440,47 +490,50 @@ autoprefixer 处理后：
 ```
 你只需要关心编写标准语法的 css，autoprefixer 会自动补全。
 
-在 watchcss 和 minifycss 任务中加入 autoprefixer:
+在 watchcss 任务中加入 autoprefixer:
 
 ```js
-// 检测文件修改后压缩 css
 gulp.task('watchcss', function () {
     gulp.watch('src/css/**/*.css', function (event) {
-        var path = watchPath(event, 'src/', 'dist/')
-        console.log(' ')
-        console.log(event.type + ':' + path.srcPath)
-        console.log('dist:' + path.distPath)
+        var paths = watchPath(event, 'src/', 'dist/')
 
-                // src/css/css-1.css
-        gulp.src(path.srcPath)
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
+
+        gulp.src(paths.srcPath)
             .pipe(sourcemaps.init())
-            .pipe(minifycss())
             .pipe(autoprefixer({
               browsers: 'last 2 versions'
             }))
+            .pipe(minifycss())
             .pipe(sourcemaps.write('./'))
-            // src/css/
-            .pipe(gulp.dest(path.distDir))
+            .pipe(gulp.dest(paths.distDir))
     })
-})
-
-// 压缩 css
-gulp.task('minifycss', function () {
-      gulp.src('src/css/**/*.css')
-      .pipe(autoprefixer({
-          browsers: ['last 2 versions'],
-          cascade: false
-      }))
-      .pipe(sourcemaps.init())
-      .pipe(minifycss())
-      .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('dist/css/'))
 })
 ```
 
 更多 autoprefixer 参数请查看 [gulp-autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer)
 
+有时我们也需要一次编译所有 css 文件。可以配置 `minifyss` 任务。
 
+```js
+gulp.task('minifycss', function () {
+    gulp.src('src/css/**/*.css')
+        .pipe(sourcemaps.init())
+        .pipe(autoprefixer({
+          browsers: 'last 2 versions'
+        }))
+        .pipe(minifycss())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('dist/css/'))
+})
+```
+
+在命令行输入 `gulp minifyss` 以压缩 `src/css/` 下的所有 .css 文件并复制到 `dist/css` 目录下
+
+未完待续..
+
+<!--
 配置 Less 任务
 ------------
 Less 的任务只需在 css 任务的基础上增加一个 `pipe(less())` ，并改变 watch的路径。
@@ -653,5 +706,6 @@ gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchima
 复制 `src/fonts/` 文件到 `dist/` 中
 
 
+-->
 
 [你还想学习什么关于 gulp 的知识？告诉我们！](https://github.com/nimojs/gulp-book/issues/8)
