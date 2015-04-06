@@ -1,30 +1,27 @@
-使用 gulp 开发一个项目
+使用 gulp 构建一个项目
 ==================
 
-请务必理解如下章节后阅读此章节：
-
-1. [安装 Node 和 gulp](chapter1.md)
-2. [使用 gulp 压缩 JS](chapter2.md)
-3. [使用 gulp 压缩 CSS](chapter3.md)
-4. [使用 gulp 压缩图片](chapter4.md)
-5. [使用 gulp 编译 LESS](chapter5.md)
-6. [使用 gulp 编译 SASS](chapter6.md)
+请务必理解前面的章节后阅读此章节：
 
 ----------
 
 本章将介绍
+- [colors](https://github.com/Marak/colors.js)
 - [gulp-watch-path](https://github.com/nimojs/gulp-watch-path)
+- [stream-combiner2](https://github.com/gulpjs/gulp/blob/master/docs/recipes/combining-streams-to-handle-errors.md)
 - [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
+- [gulp-autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer/blob/master/package.json)
 
 并将之前所有章节的内容组合起来编写一个前端项目所需的 gulp 代码。
 
-你可以在 [nimojs/gulp-demo](https://github.com/nimojs/gulp-demo) 找到本章所有代码。
+你可以在 [nimojs/gulp-demo](https://github.com/nimojs/gulp-demo) 查看完整代码。
+
+若你不了解npm 请务必阅读 [npm模块管理器](http://javascript.ruanyifeng.com/nodejs/npm.html)
 
 package.json
 ------------
 
-首先利用 `package.json` 保存所有 `npm install --save-dev gulp-xxx` 模块依赖和模块版本。
-
+如果你熟悉 npm 则可以利用 `package.json` 保存所有 `npm install --save-dev gulp-xxx` 模块依赖和模块版本。
 
 在命令行输入（此后 `$` 前缀用于表示是在命令行中的操作）
 
@@ -34,7 +31,7 @@ $ npm init
 
 会依次要求补全项目信息，不清楚的可以直接回车跳过
 ```
-name: (chapter7) 
+name: (gulp-demo) 
 version: (1.0.0) 
 description: 
 entry point: (index.js) 
@@ -45,7 +42,7 @@ Is this ok? (yes)
 ```
 
 最终会在当前目录中创建 `package.json` 文件并生成类似如下代码：
-```
+```js
 {
   "name": "gulp-demo",
   "version": "0.0.0",
@@ -78,7 +75,7 @@ $ npm install gulp --save-dev
 
 此时打开 `package.json` 会发现多了如下代码
 
-```
+```js
 "devDependencies": {
 	"gulp": "^3.8.11"
 }
@@ -86,9 +83,9 @@ $ npm install gulp --save-dev
 
 声明此项目的开发依赖 gulp
 
-接着安装其他依赖
+接着安装其他依赖：(安装模块较多，请耐心等待，若一直安装失败可使用[npm.taobao.org](http://npm.taobao.org/)）
 ```
-$ npm install gulp-uglify gulp-minify-css gulp-imagemin gulp-less gulp-sass --save-dev
+$ npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-minify-css gulp-autoprefixer gulp-less gulp-ruby-sass gulp-imagemin  --save-dev
 ```
 
 
@@ -104,7 +101,7 @@ $ npm install gulp-uglify gulp-minify-css gulp-imagemin gulp-less gulp-sass --sa
 
 `dist/` 目录下的文件都是根据 `src/` 下所有源码文件构建而成。
 
-再 `src/` 下创建前端资源对应的的文件夹
+在 `src/` 下创建前端资源对应的的文件夹
 
 ```
 └── src/
@@ -120,7 +117,7 @@ $ npm install gulp-uglify gulp-minify-css gulp-imagemin gulp-less gulp-sass --sa
 
 由开发者自己决定使用 LESS 、 SASS 或直接编写 CSS。
 
-压缩 JS 
+配置 JS 任务
 --------
 ### gulp-uglify
 检测`src/js/`目录下的 js 文件修改后，压缩 `js/` 中所有 js 文件并输出到 `dist/css/` 中
@@ -143,14 +140,14 @@ gulp.task('default', function () {
 `src/js/**/*.js` 是 glob 语法。[百度百科：glob模式](http://baike.baidu.com/view/4019153.htm) 、[node-glob](https://github.com/isaacs/node-glob)
 
 在命令行输入 `gulp` 后会出现如下消息，表示已经启动。
-```
+```ruby
 [20:39:50] Using gulpfile ~/Documents/code/gulp-book/demo/chapter7/gulpfile.js
 [20:39:50] Starting 'default'...
 [20:39:50] Finished 'default' after 13 ms
 ```
 此时编辑 [src/js/log.js](https://github.com/nimojs/gulp-demo/src/js/log.js) 文件并保存，命令行会出现如下消息，表示检测到 `src/js/**/*.js` 文件修改后重新编译所有 js。
 
-```
+```ruby
 [20:39:52] Starting 'js'...
 [20:39:52] Finished 'js' after 14 ms
 ```
@@ -302,7 +299,7 @@ var log=function(o){console.log("--------"),console.log(o),console.log("--------
 
 压缩后的代码不存在换行符和空白符，导致出错后很难调试，好在我们可以使用 [sourcemap](http://www.ruanyifeng.com/blog/2013/01/javascript_source_map.html) 帮助调试
 
-```
+```js
 // 改写代码
 gulp.task('watchjs', function () {
     // 编译 JS
@@ -367,14 +364,14 @@ gulp.task('uglifyjs', function () {
 
 此时，你可以通过在 命令行输入 `gulp uglifyjs` 以压缩 `src/js/` 下的所有 js 文件。
 
-压缩 CSS
+配置 CSS 任务
 -------
 
 有时我们不想使用 LESS 或 SASS而是直接编写 CSS，但我们需要压缩 CSS 以提高页面加载速度。
 
 ### gulp-minify-css
 
-按照本章中压缩 JS的方式，先编写 `watchcss` 任务
+按照本章中压缩 JS 的方式，先编写 `watchcss` 任务
 
 ```js
 // 检测文件修改后压缩 css
@@ -405,6 +402,7 @@ gulp.task('watchcss', function () {
 gulp.task('default', ['watchjs','watchcss'])
 ```
 
+在命令行输入 `gulp` 启动 `watchcss`
 
 然后编写 `minifycss` 任务
 
@@ -420,7 +418,240 @@ gulp.task('minifycss', function () {
 ```
 在命令行输入 `gulp minifycss` 以编译 `src/css/` 下的所有 css 文件。
 
+### gulp-autoprefixer
+
+autoprefixer 解析 CSS 文件并且添加浏览器前缀到CSS规则里。
+通过示例帮助理解 
+
+autoprefixer 处理前：
+```css
+.demo {
+    display:flex;
+}
+```
+
+autoprefixer 处理后：
+```css
+.demo {
+    display:-webkit-flex;
+    display:-ms-flexbox;
+    display:flex;
+}
+```
+你只需要关心编写标准语法的 css，autoprefixer 会自动补全。
+
+在 watchcss 和 minifycss 任务中加入 autoprefixer:
+
+```js
+// 检测文件修改后压缩 css
+gulp.task('watchcss', function () {
+    gulp.watch('src/css/**/*.css', function (event) {
+        var path = watchPath(event, 'src/', 'dist/')
+        console.log(' ')
+        console.log(event.type + ':' + path.srcPath)
+        console.log('dist:' + path.distPath)
+
+                // src/css/css-1.css
+        gulp.src(path.srcPath)
+            .pipe(sourcemaps.init())
+            .pipe(minifycss())
+            .pipe(autoprefixer({
+              browsers: 'last 2 versions'
+            }))
+            .pipe(sourcemaps.write('./'))
+            // src/css/
+            .pipe(gulp.dest(path.distDir))
+    })
+})
+
+// 压缩 css
+gulp.task('minifycss', function () {
+      gulp.src('src/css/**/*.css')
+      .pipe(autoprefixer({
+          browsers: ['last 2 versions'],
+          cascade: false
+      }))
+      .pipe(sourcemaps.init())
+      .pipe(minifycss())
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest('dist/css/'))
+})
+```
+
+更多 autoprefixer 参数请查看 [gulp-autoprefixer](https://github.com/sindresorhus/gulp-autoprefixer)
+
+
+配置 Less 任务
+------------
+Less 的任务只需在 css 任务的基础上增加一个 `pipe(less())` ，并改变 watch的路径。
+
+```
+// less 任务
+gulp.task('watchless', function () {
+    gulp.watch('src/less/**/*.less', function (event) {
+        var path = watchPath(event, 'src/', 'dist/')
+        /*
+        path = {  srcPath: 'src/less/less.less',
+                  srcDir: 'src/less/',
+                  distPath: 'dist/css/less.css',
+                  distDir: 'dist/css/',
+                  filename: 'less.less' }
+        */
+        console.log(' ')
+        console.log(event.type + ':' + path.srcPath)
+        console.log('dist:' + path.distPath)
+
+                // src/css/css-1.css
+        gulp.src(path.srcPath)
+            .pipe(sourcemaps.init())
+            .pipe(less())
+            .pipe(minifycss())
+            .pipe(autoprefixer({
+              browsers: 'last 2 versions'
+            }))
+            .pipe(sourcemaps.write('./'))
+            // src/css/
+            .pipe(gulp.dest(path.distDir))
+    })
+})
+
+gulp.task('default', ['watchjs', 'watchcss', 'watchless'])
+```
+在命令行输入 gulp 启动 watchless 任务。
+```
+gulp
+```
+
+如果将 .less 文件内容是 `abcde` 这种错误的语法，编译时会导致 gulp 终止运行。
+
+参照 js 任务改写代码，加上 `combiner`。
+
+```js
+var combined = combiner.obj([
+            gulp.src(path.srcPath), // src/less/less.less
+            sourcemaps.init(),
+            less(),
+            minifycss(),
+            autoprefixer({
+              browsers: 'last 2 versions'
+            }),
+            sourcemaps.write('./'),
+            gulp.dest(path.distDir) // dist/css/
+        ]);
+        combined.on('error', function (err) {
+            console.log(' ')
+            console.log(colors.error('Error'))
+            console.log('fileName: ' + colors.error(err.fileName))
+            console.log('lineNumber: ' + colors.error(err.lineNumber))
+            console.log('message: ' + err.message)
+            console.log('plugin: ' + colors.info(err.plugin))
+        })
+```
+
+此时当将 `src/less/less.less` 内容保存为 `abcde` 时候，会在控制台出现错误提示，而 gulp 不会终止。
+
+接着编写 lesscss 任务
+
+```js
+gulp.task('lesscss', function () {
+    var combined = combiner.obj([
+        gulp.src('src/less/**/*.less'), // src/less/less.less
+        sourcemaps.init(),
+        less(),
+        minifycss(),
+        autoprefixer({
+          browsers: 'last 2 versions'
+        }),
+        sourcemaps.write('./'),
+        gulp.dest('dist/css/')
+    ]);
+    combined.on('error', function (err) {
+        console.log(' ')
+        console.log(colors.error('Error'))
+        console.log('fileName: ' + colors.error(err.fileName))
+        console.log('lineNumber: ' + colors.error(err.lineNumber))
+        console.log('message: ' + err.message)
+        console.log('plugin: ' + colors.info(err.plugin))
+    })
+})
+```
+
+在命令输入 `gulp lesscss` 编译 `src/less/` 目录下的所有 `.less`后缀文件。
+
+
+配置 Sass 任务
+-------------
+
+Sass 的配置比较简单。
+
+```js
+gulp.task('sasscss', function () {
+        sass('src/sass/')
+        .on('error', function (err) {
+            console.error('Error!', err.message);
+        })
+        .pipe(sourcemaps.init())
+        .pipe(minifycss())
+        .pipe(autoprefixer({
+          browsers: 'last 2 versions'
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('dist/css'))
+})
+
+gulp.task('watchsass',function () {
+    gulp.watch('src/sass/**/*.scss', ['sasscss']);
+})
+
+gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchremind'])
+```
+
+命令行输入 `gulp` 启动检测文件编译
+
+输入 `gulp sasscss` 编译 `src/sass/` 下的所有文件
+
+配置 image 任务
+----------
+
+```js
+gulp.task('watchimage', function () {
+    gulp.watch('src/images/**/*', function (event) {
+        var path = watchPath(event, 'src/', 'dist/')
+        /*
+        path = {  srcPath: 'src/images/loading.gif',
+                  srcDir: 'src/images/',
+                  distPath: 'dist/images/loading.gif',
+                  distDir: 'dist/images/',
+                  filename: 'loading.gif' }
+        */
+        var sNow = now();
+        console.log('\n')
+        console.log(sNow + ' ' + colors.info(event.type) + ':' + path.srcPath)
+        console.log(sNow + ' ' + 'dist:' + path.distPath)
+
+        gulp.src(path.srcPath)
+            .pipe(imagemin({
+                progressive: true
+            }))
+            .pipe(gulp.dest(path.distDir))
+    })
+})
+
+gulp.task('image', function () {
+    gulp.src('src/images/**/*')
+        .pipe(imagemin({
+            progressive: true
+        }))
+        .pipe(gulp.dest('dist/images'))
+})
+
+gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchimage', 'watchremind'])
+```
+
+配置文件复制任务
+-----------
+复制 `src/fonts/` 文件到 `dist/` 中
 
 
 
-[阅读下一章节：使用 gulp 编译 markdown](chapter8.md)
+[你还想学习什么关于 gulp 的知识？告诉我们！](https://github.com/nimojs/gulp-book/issues/8)

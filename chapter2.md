@@ -19,13 +19,17 @@
 gulp 代码
 ----
 
-你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter2)
+你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) 或 [在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter2)
 
 **建议**：你可以只阅读下面的代码与注释或同时阅读代码解释
 
 gulp 的所有配置代码都写在 `gulpfile.js` 文件。
 
 **一、新建一个 `gulpfile.js` 文件**
+```
+chapter2
+└── gulpfile.js
+```
 
 ---------
 
@@ -33,10 +37,10 @@ gulp 的所有配置代码都写在 `gulpfile.js` 文件。
 
 ```js
 // 获取 gulp
-var gulp = require('gulp');
+var gulp = require('gulp')
 ```
 
-> `require()` 是 node （CommonJS）中获取模块的语法，此处不做过多解释。
+> `require()` 是 node （CommonJS）中获取模块的语法。
 > 
 > 在 gulp 中你只需要理解 `require()` 可以获取模块。
 
@@ -46,7 +50,7 @@ var gulp = require('gulp');
 
 ```js
 // 获取 uglify 模块（用于压缩 JS）
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglify')
 ```
 
 ---------
@@ -54,15 +58,16 @@ var uglify = require('gulp-uglify');
 **四、创建压缩任务**
 
 ```js
-// 压缩文件
+// 压缩 js 文件
+// 在命令行使用 gulp script 启动此任务
 gulp.task('script', function() {
     // 1. 找到文件
     gulp.src('js/*.js')
     // 2. 压缩文件
         .pipe(uglify())
     // 3. 另存压缩后的文件
-        .pipe(gulp.dest('dist/js'));
-});
+        .pipe(gulp.dest('dist/js'))
+})
 ```
 
 - `gulp.task(name, fn)` - 定义任务，第一个参数是任务名，第二个参数是任务内容。
@@ -126,7 +131,14 @@ gulp-uglify@1.1.0 node_modules/gulp-uglify
 chapter2 $
 ```
 
-在你的文件夹中会 新增一个 `node_modules` 文件夹，这里面存放着 npm 安装的模块。
+在你的文件夹中会新增一个 `node_modules` 文件夹，这里面存放着 npm 安装的模块。
+
+目录结构：
+```
+├── gulpfile.js
+└── node_modules
+	└── gulp-uglify
+```
 
 接着输入 `gulp script` 执行任务
 
@@ -141,22 +153,48 @@ gulp script
 
 **八、编写 js 文件**
 
-我们发现 gulp 没有进行任何压缩操作。因为没有js目录，自然也没有 js 目录下的 `.js` 后缀文件。
+我们发现 gulp 没有进行任何压缩操作。因为没有js这个目录，也没有 js 目录下的 `.js` 后缀文件。
 
 创建 `a.js` 文件，并编写如下内容
 
 ```
 // a.js
 function demo (msg) {
-    alert('--------\r\n' + msg + '\r\n--------');
+    alert('--------\r\n' + msg + '\r\n--------')
 }
 
-demo('Hi');
+demo('Hi')
+```
+
+目录结构：
+```
+├── gulpfile.js
+├──  js
+│	└── a.js
+└── node_modules
+	└── gulp-uglify
 ```
 
 接着在命令行输入 `gulp script` 执行任务
 
 gulp 会在命令行当前目录下创建 `dist/js/` 文件夹，并创建压缩后的 `a.js` 文件。
+
+目录结构：
+```
+├── gulpfile.js
+├──  js
+│	└── a.js
+├──  dist
+│	└── js
+│		└── a.js
+└── node_modules
+	└── gulp-uglify
+```
+
+[dist/js/a.js](https://github.com/nimojs/gulp-book/blob/master/demo/chapter2/dist/js/a.js)
+```js
+function demo(n){alert("--------\r\n"+n+"\r\n--------")}demo("Hi");
+```
 
 ---------
 
@@ -174,16 +212,29 @@ gulp.watch('js/*.js', ['script']);
 
 但是没有命令可以运行 `gulp.watch()`，需要将 `gulp.watch()` 包含在一个任务中。
 
-修改代码如下：
 ```
+// 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 script 任务
-    gulp.watch('js/*.js', ['script']);
+    gulp.watch('js/*.js', ['script'])
 })
 ```
 
 接在在命令行输入 `gulp auto`，自动监听 `js/*.js` 文件的修改后压缩js。
 
+```
+$gulp auto
+[21:09:45] Using gulpfile ~/Documents/code/gulp-book/demo/chapter2/gulpfile.js
+[21:09:45] Starting 'auto'...
+[21:09:45] Finished 'auto' after 9.19 ms
+```
+
+此时修改 `js/a.js` 中的代码并保存。命令行将会出现提示，表示检测到文件修改并压缩文件。
+
+```
+[21:11:01] Starting 'script'...
+[21:11:01] Finished 'script' after 2.85 ms
+```
 至此，我们完成了 gulp 压缩 js 文件的自动化代码编写。
 
 **注意：**使用 `gulp.watch` 后你的命令行会进入“运行”状态，此时你不可以在命令行进行其他操作。可通过 `Ctrl + C` 停止 gulp。(Mac 中使用 `control + C`)
@@ -204,10 +255,10 @@ gulp.task('default', ['script', 'auto']);
 
 ```js
 // 获取 gulp
-var gulp = require('gulp');
+var gulp = require('gulp')
 
 // 获取 uglify 模块（用于压缩 JS）
-var uglify = require('gulp-uglify');
+var uglify = require('gulp-uglify')
 
 // 压缩 js 文件
 // 在命令行使用 gulp script 启动此任务
@@ -217,24 +268,24 @@ gulp.task('script', function() {
     // 2. 压缩文件
         .pipe(uglify())
     // 3. 另存压缩后的文件
-        .pipe(gulp.dest('dist/js'));
-});
+        .pipe(gulp.dest('dist/js'))
+})
 
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 script 任务
-    gulp.watch('js/*.js', ['script']);
-});
+    gulp.watch('js/*.js', ['script'])
+})
 
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 script 任务和 auto 任务
-gulp.task('default', ['script', 'auto']);
+gulp.task('default', ['script', 'auto'])
 ```
 
-去除注释后，你会发现只需要 11 行代码就可以让 gulp 自动监听 js 文件的修改后压缩代码。
+去除注释后，你会发现只需要 11 行代码就可以让 gulp 自动监听 js 文件的修改后压缩代码。但是还有还有一些性能问题和缺少容错性，将在后面的章节详细说明。
 
 
 你可以访问 [gulp-uglify](https://github.com/terinjokes/gulp-uglify) 以查看更多用法。
 
-[阅读下一章节：使用 gulp 压缩 CSS](chapter3.md)
+[接着阅读：使用 gulp 压缩 CSS](chapter3.md)

@@ -3,9 +3,11 @@
 
 gulp 是基于 node 实现的，那么我们就需要先安装 node。
 
-Node 是一个基于Chrome JavaScript V8引擎建立的一个平台，可以利用它实现 Web服务，做类似PHP的事。
+> Node 是一个基于Chrome JavaScript V8引擎建立的一个平台，可以利用它实现 Web服务，做类似PHP的事。
 
 打开 https://nodejs.org/ 点击绿色的 **INSTALL** 按钮下载安装 node。
+
+<a href="#hash_cli" name="hash_cli"></a>
 
 使用终端/命令行
 -------------
@@ -66,7 +68,7 @@ npm 模块管理器
 安装 gulp
 ----
 
-npm 基于终端/命令行的 node 包管理工具，可以利用它安装 gulp 所需的包。（在安装 node 时已经自动安装了 npm）
+npm 是 node 的包管理工具，可以利用它安装 gulp 所需的包。（在安装 node 时已经自动安装了 npm）
 
 在命令行输入
 

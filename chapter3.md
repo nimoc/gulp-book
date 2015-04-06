@@ -20,14 +20,16 @@
 gulp 代码
 ---------
 
-你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter3)
+你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) 或 [在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter3)
 
-当熟悉 [使用 gulp 压缩 JS](chapter2.md) 的方法后，编写压缩 CSS 的 gulp 代码编写就变得很轻松。
+当熟悉 [使用 gulp 压缩 JS](chapter2.md) 的方法后，配置压缩 CSS 的 gulp 代码就变得很轻松。
 
 
 **一、安装 gulp-minify-css** 模块
 
-提示：你需要使用命令行的 `cd` 切换至对应目录再进行安装操作和 gulp 启动操作。[使用终端/命令行](chapter1.md)
+提示：你需要使用命令行的 `cd` 切换到对应目录后进行安装操作。
+
+[学习使用命令行](chapter1.md)
 
 在命令行输入
 
@@ -35,7 +37,7 @@ gulp 代码
 npm install gulp-minify-css
 ```
 
-安装成功后你会看到如下信息：
+安装成功后你会看到如下信息：(安装时间可能会比较长)
 
 ```
 gulp-minify-css@1.0.0 node_modules/gulp-minify-css
@@ -53,10 +55,10 @@ gulp-minify-css@1.0.0 node_modules/gulp-minify-css
 
 ```js
 // 获取 gulp
-var gulp = require('gulp');
+var gulp = require('gulp')
 
 // 获取 minify-css 模块（用于压缩 CSS）
-var minifyCSS = require('gulp-minify-css');
+var minifyCSS = require('gulp-minify-css')
 
 // 压缩 css 文件
 // 在命令行使用 gulp css 启动此任务
@@ -66,19 +68,18 @@ gulp.task('css', function () {
     // 2. 压缩文件
         .pipe(minifyCSS())
     // 3. 另存为压缩文件
-        .pipe(gulp.dest('dist/css'));
+        .pipe(gulp.dest('dist/css'))
 })
 
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 css 任务
-    gulp.watch('css/*.css', ['css']);
+    gulp.watch('css/*.css', ['css'])
 });
-
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 css 任务和 auto 任务
-gulp.task('default', ['css', 'auto']);
+gulp.task('default', ['css', 'auto'])
 ```
 
 你可以访问 [gulp-minify-css](https://github.com/jonathanepollack/gulp-minify-css) 以查看更多用法。
@@ -116,5 +117,6 @@ gulp
 ```
 
 gulp 会创建 `dist/css` 目录，并创建 `a.css` 文件，此文件存放压缩后的 css 代码。
+[dist/css/a.css](https://github.com/nimojs/gulp-book/blob/master/demo/chapter3/dist/css/a.css)
 
-[阅读下一章节：使用 gulp 压缩图片](chapter4.md)
+[接着阅读：使用 gulp 压缩图片](chapter4.md)

@@ -25,9 +25,9 @@ npm install gulp-less
 
 ```js
 // 获取 gulp
-var gulp = require('gulp');
+var gulp = require('gulp')
 // 获取 gulp-less 模块
-var less = require('gulp-less');
+var less = require('gulp-less')
 
 // 编译less
 // 在命令行输入 gulp images 启动此任务
@@ -37,20 +37,21 @@ gulp.task('less', function () {
     // 2. 编译为css
         .pipe(less())
     // 3. 另存文件
-        .pipe(gulp.dest('dist/css'));
+        .pipe(gulp.dest('dist/css'))
 });
 
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 images 任务
-    gulp.watch('less/**.less', ['less']);
-});
+    gulp.watch('less/**.less', ['less'])
+})
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 less 任务和 auto 任务
-gulp.task('default', ['less', 'auto']);
+gulp.task('default', ['less', 'auto'])
 ```
 
+你可以访问 [gulp-less](https://github.com/plus3network/gulp-less) 以查看更多用法。
 
 LESS 代码和编译后的CSS代码
 ----------
@@ -92,4 +93,4 @@ LESS 代码和编译后的CSS代码
   color: red;
 }
 ```
-[阅读下一章节：使用 gulp 编译 SASS](chapter6.md)
+[接着阅读：使用 gulp 编译 Sass](chapter6.md)

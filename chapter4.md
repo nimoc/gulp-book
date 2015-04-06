@@ -19,21 +19,23 @@
 gulp 代码
 ---------
 
-你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) - [或在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter4)
+你可以 [下载所有示例代码](https://github.com/nimojs/gulp-book/archive/master.zip) 或 [在线查看代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter4)
 
 
 
 **一、安装 gulp-imagemin** 模块
 
-提示：你需要使用命令行的 `cd` 切换至对应目录再进行安装操作和 gulp 启动操作。[使用终端/命令行](chapter1.md)
+提示：你需要使用命令行的 `cd` 切换至对应目录再进行安装操作和 gulp 启动操作。
+
+[学习使用命令行](chapter1.md)
 
 在命令行输入
 
 ```
-$npm instal gulp-imagemin
+npm instal gulp-imagemin
 ```
 
-安装成功后你会看到如下信息：
+安装成功后你会看到如下信息：(安装时间可能会比较长)
 
 ```
 gulp-imagemin@2.2.1 node_modules/gulp-imagemin
@@ -54,7 +56,7 @@ gulp-imagemin@2.2.1 node_modules/gulp-imagemin
 var gulp = require('gulp');
 
 // 获取 gulp-imagemin 模块
-var imagemin = require('gulp-imagemin');
+var imagemin = require('gulp-imagemin')
 
 // 压缩图片任务
 // 在命令行输入 gulp images 启动此任务
@@ -66,18 +68,18 @@ gulp.task('images', function () {
             progressive: true
         }))
     // 3. 另存图片
-        .pipe(gulp.dest('dist/images'));
+        .pipe(gulp.dest('dist/images'))
 });
 
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 images 任务
-    gulp.watch('images/*.*', ['images']);
+    gulp.watch('images/*.*)', ['images'])
 });
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 images 任务和 auto 任务
-gulp.task('default', ['images', 'auto']);
+gulp.task('default', ['images', 'auto'])
 ```
 
 你可以访问 [gulp-imagemin](gulp-imagemin) 以查看更多用法。
@@ -111,4 +113,4 @@ gulp
 [18:10:42] gulp-imagemin: Minified 3 images (saved 25.83 kB - 5.2%)
 ```
 
-[阅读下一章节：使用 gulp 编译 LESS](chapter5.md)
+[接着阅读：使用 gulp 编译 LESS](chapter5.md)

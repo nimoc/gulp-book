@@ -1,6 +1,6 @@
 // a.js
 function demo (msg) {
-    alert('--------\r\n' + msg + '\r\n--------');
+    alert('--------\r\n' + msg + '\r\n--------')
 }
 
-demo('Hi');
+demo('Hi')
