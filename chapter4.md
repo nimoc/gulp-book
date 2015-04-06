@@ -6,6 +6,8 @@
 1. [安装 Node 和 gulp](chapter1.md)
 2. [使用 gulp 压缩 JS](chapter2.md)
 
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/13)
 ----------
 
 压缩 图片文件可降低文件大小，提高图片加载速度。
@@ -112,5 +114,7 @@ gulp
 [18:10:42] Finished 'default' after 5.91 μs
 [18:10:42] gulp-imagemin: Minified 3 images (saved 25.83 kB - 5.2%)
 ```
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/13)
 
 [接着阅读：使用 gulp 编译 LESS](chapter5.md)
