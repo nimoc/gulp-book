@@ -1,6 +1,8 @@
 使用 gulp 编译 LESS
 ================
 
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/14)
+
 请务必理解如下章节后阅读此章节：
 
 1. [安装 Node 和 gulp](chapter1.md)
@@ -93,4 +95,7 @@ LESS 代码和编译后的CSS代码
   color: red;
 }
 ```
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/14)
+
 [接着阅读：使用 gulp 编译 Sass](chapter6.md)
