@@ -7,6 +7,8 @@ gulp 是基于 node 实现的，那么我们就需要先安装 node。
 
 打开 https://nodejs.org/ 点击绿色的 **INSTALL** 按钮下载安装 node。
 
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/10)
+
 <a href="#hash_cli" name="hash_cli"></a>
 
 使用终端/命令行
@@ -82,5 +84,7 @@ npm install -g gulp
 安装时请注意命令行的提示信息，安装完成后可在命令行输入 `gulp -v` 以确认安装成功。
 
 至此，我们完成了准备工作。接着让 gulp 开始帮我们干活吧！
+
+[访问论坛获取帮助](https://github.com/nimojs/gulp-book/issues/10)
 
 [阅读下一章节：使用 gulp 压缩JS](chapter2.md)
