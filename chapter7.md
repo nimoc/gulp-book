@@ -545,7 +545,7 @@ var less = require('gulp-less')
 
 gulp.task('watchless', function () {
     gulp.watch('src/less/**/*.less', function (event) {
-        var paths = watchPath(event, 'src/', 'dist/')
+        var paths = watchPath(event, 'src/less/', 'dist/css/')
 
         log(colors.info(event.type) + ':' + paths.srcPath)
         log('dist:' + paths.distPath)
@@ -585,9 +585,29 @@ gulp.task('default', ['watchjs', 'watchcss', 'watchless'])
 配置 Sass 任务
 -------------
 
-ruby-sass 的配置比较简单。
+参考配置 JavaScript 任务的方式配置 Sass 任务
 
 ```js
+gulp.task('watchsass',function () {
+    gulp.watch('src/sass/**/*', function (event) {
+        var paths = watchPath(event, 'src/sass/', 'dist/css/')
+
+        log(colors.info(event.type) + ':' + paths.srcPath)
+        log('dist:' + paths.distPath)
+        sass(paths.srcPath)
+            .on('error', function (err) {
+                console.error('Error!', err.message);
+            })
+            .pipe(sourcemaps.init())
+            .pipe(minifycss())
+            .pipe(autoprefixer({
+              browsers: 'last 2 versions'
+            }))
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest(paths.distDir))
+    })
+})
+
 gulp.task('sasscss', function () {
         sass('src/sass/')
         .on('error', function (err) {
@@ -602,18 +622,15 @@ gulp.task('sasscss', function () {
         .pipe(gulp.dest('dist/css'))
 })
 
-gulp.task('watchsass',function () {
-    gulp.watch('src/sass/**/*.scss', ['sasscss']);
-})
-
 gulp.task('default', ['watchjs', 'watchcss', 'watchless', 'watchsass', 'watchsass'])
 ```
 
 配置 image 任务
 ----------
-var imagemin = require('gulp-imagemin')
 
 ```js
+var imagemin = require('gulp-imagemin')
+
 gulp.task('watchimage', function () {
     gulp.watch('src/images/**/*', function (event) {
         var paths = watchPath(event,'src/','dist/')
