@@ -1,39 +1,18 @@
 var gulp = require('gulp')
-var colors = require('colors')
-
-colors.setTheme({
-    silly: 'rainbow',
-    input: 'grey',
-    verbose: 'cyan',
-    prompt: 'grey',
-    info: 'green',
-    data: 'grey',
-    help: 'cyan',
-    warn: 'yellow',
-    debug: 'blue',
-    error: 'red'
-})
-
-var log = function (msg) {
-    // 14:13:55 GMT+0800 (CST)
-    var now = new Date().toTimeString().replace(/\s.*$/, '')
-    var now =  '[' + colors.data(now) + ']'
-    // [10:52:18]
-    console.log(now + ' ' + msg)
-}
-
-var handleError = function (err) {
-    console.log('\n')
-    log(colors.error('Error!'))
-    log('fileName: ' + colors.error(err.fileName))
-    log('lineNumber: ' + colors.error(err.lineNumber))
-    log('message: ' + err.message)
-    log('plugin: ' + colors.info(err.plugin))
-}
-
+var gutil = require('gulp-util')
 var uglify = require('gulp-uglify')
 var watchPath = require('gulp-watch-path')
 var combiner = require('stream-combiner2')
+
+var handleError = function (err) {
+    var colors = gutil.colors;
+    console.log('\n')
+    gutil.log(colors.red('Error!'))
+    gutil.log('fileName: ' + colors.red(err.fileName))
+    gutil.log('lineNumber: ' + colors.red(err.lineNumber))
+    gutil.log('message: ' + err.message)
+    gutil.log('plugin: ' + colors.yellow(err.plugin))
+}
 
 gulp.task('watchjs', function () {
     gulp.watch('src/js/**/*.js', function (event) {
@@ -47,8 +26,8 @@ gulp.task('watchjs', function () {
               srcFilename: 'log.js',
               distFilename: 'log.js' }
         */
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+        gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         var combined = combiner.obj([
             gulp.src(paths.srcPath),

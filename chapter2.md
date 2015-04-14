@@ -77,6 +77,8 @@ gulp.task('script', function() {
 - `gulp.dest(path)` - 输出文件
 - `gulp.pipe()` - 管道，你可以暂时将 pipe 理解为将操作加入执行队列
 
+参考：[gulp API文档](http://www.gulpjs.com.cn/docs/api/)
+
 ---------
 
 **五、跳转至 `gulpfile.js` 所在目录**

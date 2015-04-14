@@ -91,7 +91,7 @@ npm install gulp --save-dev
 
 
 ```
-npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-minify-css gulp-autoprefixer gulp-less gulp-ruby-sass gulp-imagemin  --save-dev
+npm install gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-minify-css gulp-autoprefixer gulp-less gulp-ruby-sass gulp-imagemin gulp-util --save-dev
 ```
 此时，[package.json](https://github.com/nimojs/gulp-demo/blob/master/package.json) 将会更新
 ```js
@@ -105,7 +105,7 @@ npm install colors gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps 
     "gulp-ruby-sass": "^1.0.1",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-uglify": "^1.1.0",
-    "gulp-watch-path": "0.0.1",
+    "gulp-watch-path": "^0.0.4",
     "stream-combiner2": "^1.0.2"
 }
 ```
@@ -133,7 +133,7 @@ npm install
 ```
 └── src/
 	├── less/    *.less 文件
-	├── sass/    *.scss 文件
+	├── sass/    *.scss *.sass 文件
 	├── css/     *.css  文件
 	├── js/      *.js 文件
 	├── fonts/   字体文件
@@ -145,59 +145,20 @@ npm install
 
 让命令行输出的文字带颜色
 -------------------
-gulp 自带的输出都带时间和颜色，这样很容易识别。我们利用 [colors](https://www.npmjs.com/package/colors) 实现同样的效果。
+gulp 自带的输出都带时间和颜色，这样很容易识别。我们利用 [gulp-util](https://github.com/gulpjs/gulp-util) 实现同样的效果。
 
 ```js
 var gulp = require('gulp')
-var colors = require('colors')
-
-colors.setTheme({
-    silly: 'rainbow',
-    input: 'grey',
-    verbose: 'cyan',
-    prompt: 'grey',
-    info: 'green',
-    data: 'grey',
-    help: 'cyan',
-    warn: 'yellow',
-    debug: 'blue',
-    error: 'red'
-})
+var gutil = require('gulp-util')
 
 gulp.task('default', function () {
-	console.log(colors.info('message'))
-	console.log(colors.error('error message'))
+    gutil.log('message')
+    gutil.log(gutil.colors.red('error'))
+    gutil.log(gutil.colors.green('message:') + "some")
 })
 ```
-使用 `gulp` 启动任务后会看见绿色的 `message` 和红色的 `error message`。
-
----------
-我们还需要输出当前的时间
-
-```js
-var log = function (msg) {
-    // 14:13:55 GMT+0800 (CST)
-    var now = new Date().toTimeString().replace(/\s.*$/, '')
-    var now =  '[' + colors.data(now) + ']'
-    // [10:52:18]
-    console.log(now + ' ' + msg)
-}
-
-gulp.task('default', function () {
-    log('change some file')
-    log(colors.error('error message:') + ' text')
-})
-```
-将会在控制台输出：
-```
-[13:41:55] Using gulpfile ~/Documents/code/gulp-demo/gulpfile.js
-[13:41:55] Starting 'default'...
-[13:41:55] !!!change some file
-[13:41:55] !!!error message: text
-[13:41:55] Finished 'default' after 402 μs
-```
-
-[logtime 完整代码](https://github.com/nimojs/gulp-book/tree/master/demo/chapter7/logtime.js)
+使用 `gulp` 启动默认任务以测试
+![gulp-util](https://cloud.githubusercontent.com/assets/3949015/7137629/a1def1b8-e2ed-11e4-83e0-5a6adb22de6f.png)
 
 配置 JS 任务
 --------
@@ -236,7 +197,7 @@ gulp.task('default', function () {
 ```
 
 ### gulp-watch-path
-此配置有个性能问题，当 `gulp.watch` 到 `src/js/` 目录下的js文件有修改时会将所有文件全部编译。实际上我们只需要重新编译被修改的文件。
+此配置有个性能问题，当 `gulp.watch` 检测到  `src/js/` 目录下的js文件有修改时会将所有文件全部编译。实际上我们只需要重新编译被修改的文件。
 
 简单介绍 `gulp.watch` 第二个参数为 `function` 时的用法。
 
@@ -252,10 +213,10 @@ gulp.watch('src/js/**/*.js', function (event) {
         path: '/Users/nimojs/Documents/code/gulp-book/demo/chapter7/src/js/log.js'
     }
     */
-});
+})
 ```
 
-我们可以利用 `event`给到的信息，检测到某个 js 文件被修改时，只编写当前修改的 js 文件。
+我们可以利用 `event` 给到的信息，检测到某个 js 文件被修改时，只编写当前修改的 js 文件。
 
 可以利用 `gulp-watch-path` 配合 `event` 获取编译路径和输出路径。
 
@@ -274,8 +235,8 @@ gulp.task('watchjs', function () {
               srcFilename: 'log.js',
               distFilename: 'log.js' }
         */
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         gulp.src(paths.srcPath)
             .pipe(uglify())
@@ -293,16 +254,16 @@ gulp.task('default', ['watchjs'])
 | 参数 | 说明 |
 |--------|--------|
 |    event    |`gulp.watch` 回调函数的 `event`|
-|    search   |需要被替换的字符串（此处被转换为正则 `/^src\//`）|
+|    search   |需要被替换的字符串或正则（字符串会被转换为正则 `/^src\//`）|
 |    replace  |第三个参数是新的的字符串|
 |   distExt   |扩展名(非必填)|
 
 
 此时编辑 [src/js/log.js](https://github.com/nimojs/gulp-demo/blob/master/src/js/log.js) 文件并保存，命令行会出现消息，表示检测到 `src/js/log.js` 文件修改后只重新编译 `log.js`。
 
-```
-[14:26:50] changed:src/js/log.js
-[14:26:50] dist:dist/js/log.js
+```ruby
+[21:47:25] changed src/js/log.js
+[21:47:25] Dist dist/js/log.js
 ```
 
 你可以访问 [gulp-watch-path](https://github.com/nimojs/gulp-watch-path) 了解更多。
@@ -336,12 +297,13 @@ js_error (/Users/nimojs/Documents/code/gulp-book/demo/chapter7/node_modules/gulp
 
 ```js
 var handleError = function (err) {
-	console.log('\n')
-    log(colors.error('Error!'))
-    log('fileName: ' + colors.error(err.fileName))
-    log('lineNumber: ' + colors.error(err.lineNumber))
-    log('message: ' + err.message)
-    log('plugin: ' + colors.info(err.plugin))
+    var colors = gutil.colors;
+    console.log('\n')
+    gutil.log(colors.red('Error!'))
+    gutil.log('fileName: ' + colors.red(err.fileName))
+    gutil.log('lineNumber: ' + colors.red(err.lineNumber))
+    gutil.log('message: ' + err.message)
+    gutil.log('plugin: ' + colors.yellow(err.plugin))
 }
 var combiner = require('stream-combiner2')
 
@@ -357,8 +319,8 @@ gulp.task('watchjs', function () {
               srcFilename: 'log.js',
               distFilename: 'log.js' }
         */
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+        gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         var combined = combiner.obj([
             gulp.src(paths.srcPath),
@@ -459,8 +421,8 @@ gulp.task('watchcss', function () {
     gulp.watch('src/css/**/*.css', function (event) {
         var paths = watchPath(event, 'src/', 'dist/')
 
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         gulp.src(paths.srcPath)
             .pipe(sourcemaps.init())
@@ -502,8 +464,8 @@ gulp.task('watchcss', function () {
     gulp.watch('src/css/**/*.css', function (event) {
         var paths = watchPath(event, 'src/', 'dist/')
 
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         gulp.src(paths.srcPath)
             .pipe(sourcemaps.init())
@@ -547,8 +509,8 @@ gulp.task('watchless', function () {
     gulp.watch('src/less/**/*.less', function (event) {
         var paths = watchPath(event, 'src/less/', 'dist/css/')
 
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
         var combined = combiner.obj([
             gulp.src(paths.srcPath),
             sourcemaps.init(),
@@ -592,8 +554,8 @@ gulp.task('watchsass',function () {
     gulp.watch('src/sass/**/*', function (event) {
         var paths = watchPath(event, 'src/sass/', 'dist/css/')
 
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
         sass(paths.srcPath)
             .on('error', function (err) {
                 console.error('Error!', err.message);
@@ -635,8 +597,8 @@ gulp.task('watchimage', function () {
     gulp.watch('src/images/**/*', function (event) {
         var paths = watchPath(event,'src/','dist/')
 
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('dist:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         gulp.src(paths.srcPath)
             .pipe(imagemin({
@@ -664,8 +626,8 @@ gulp.task('watchcopy', function () {
     gulp.watch('src/fonts/**/*', function (event) {
         var paths = watchPath(event)
 
-        log(colors.info(event.type) + ':' + paths.srcPath)
-        log('copy:' + paths.distPath)
+		gutil.log(gutil.colors.green(event.type) + ' ' + paths.srcPath)
+        gutil.log('Dist ' + paths.distPath)
 
         gulp.src(paths.srcPath)
             .pipe(gulp.dest(paths.distDir))
