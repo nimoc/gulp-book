@@ -77,6 +77,9 @@ npm 是 node 的包管理工具，可以利用它安装 gulp 所需的包。（�
 ```
 npm install -g gulp 
 ```
+
+若一直没安装成功，请[使用 cnpm 安装](https://github.com/nimojs/blog/issues/20))(npm的国内加速镜像)
+
 意思是：使用 npm 安装全局性的(`-g`) gulp 包。
 
 > 如果你安装失败，请输入`sudo npm install -g gulp `使用管理员权限安装。（可能会要求输入密码）
