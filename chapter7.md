@@ -1,7 +1,6 @@
 使用 gulp 构建一个项目
 ==================
 
-**万分抱歉，作者是在 Mac 下编写此书，Windows 中此章节会存在一些问题。努力修复中，感谢支持。**
 
 请务必理解前面的章节后阅读此章节：
 
@@ -107,7 +106,7 @@ npm install gulp-uglify gulp-watch-path stream-combiner2 gulp-sourcemaps gulp-mi
     "gulp-ruby-sass": "^1.0.1",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-uglify": "^1.1.0",
-    "gulp-watch-path": "^0.0.4",
+    "gulp-watch-path": "^0.0.7",
     "stream-combiner2": "^1.0.2"
 }
 ```
@@ -256,7 +255,7 @@ gulp.task('default', ['watchjs'])
 | 参数 | 说明 |
 |--------|--------|
 |    event    |`gulp.watch` 回调函数的 `event`|
-|    search   |需要被替换的字符串或正则（字符串会被转换为正则 `/^src\//`）|
+|    search   |需要被替换的起始字符串|
 |    replace  |第三个参数是新的的字符串|
 |   distExt   |扩展名(非必填)|
 
