@@ -1,0 +1,83 @@
+{
+  "name": "duplexer",
+  "version": "0.1.1",
+  "description": "Creates a duplex stream",
+  "keywords": [],
+  "author": {
+    "name": "Raynos",
+    "email": "raynos2@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Raynos/duplexer.git"
+  },
+  "main": "index",
+  "homepage": "https://github.com/Raynos/duplexer",
+  "contributors": [
+    {
+      "name": "Jake Verbaten"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/Raynos/duplexer/issues",
+    "email": "raynos2@gmail.com"
+  },
+  "devDependencies": {
+    "tape": "0.3.3",
+    "through": "~0.1.4"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/Raynos/duplexer/raw/master/LICENSE"
+    }
+  ],
+  "scripts": {
+    "test": "node test"
+  },
+  "testling": {
+    "files": "test/index.js",
+    "browsers": [
+      "ie/8..latest",
+      "firefox/16..latest",
+      "firefox/nightly",
+      "chrome/22..latest",
+      "chrome/canary",
+      "opera/12..latest",
+      "opera/next",
+      "safari/5.1..latest",
+      "ipad/6.0..latest",
+      "iphone/6.0..latest"
+    ]
+  },
+  "readmeFilename": "README.md",
+  "_id": "duplexer@0.1.1",
+  "dist": {
+    "shasum": "ace6ff808c1ce66b57d1ebf97977acb02334cfc1",
+    "size": 2570,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/duplexer/download/duplexer-0.1.1.tgz"
+  },
+  "_from": "duplexer@>=0.1.1 <0.2.0",
+  "_npmVersion": "1.2.18",
+  "_npmUser": {
+    "name": "raynos",
+    "email": "raynos2@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "dominictarr",
+      "email": "dominic.tarr@gmail.com"
+    },
+    {
+      "name": "raynos",
+      "email": "raynos2@gmail.com"
+    }
+  ],
+  "directories": {},
+  "publish_time": 1366997971080,
+  "_cnpm_publish_time": 1366997971080,
+  "_shasum": "ace6ff808c1ce66b57d1ebf97977acb02334cfc1",
+  "_resolved": "https://registry.npm.taobao.org/duplexer/download/duplexer-0.1.1.tgz",
+  "readme": "ERROR: No README data found!"
+}

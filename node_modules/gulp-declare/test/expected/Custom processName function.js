@@ -1,0 +1,1 @@
+this["x"] = function() { return "Main"; };
