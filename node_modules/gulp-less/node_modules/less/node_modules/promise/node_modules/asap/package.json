@@ -1,0 +1,43 @@
+{
+  "name": "asap",
+  "version": "1.0.0",
+  "description": "High-priority task queue for Node.js and browsers",
+  "keywords": [
+    "event",
+    "task",
+    "queue"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/kriskowal/asap/raw/master/LICENSE.md"
+    }
+  ],
+  "main": "asap",
+  "readmeFilename": "README.md",
+  "_id": "asap@1.0.0",
+  "dist": {
+    "shasum": "b2a45da5fdfa20b0496fc3768cc27c12fa916a7d",
+    "size": 3522,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/asap/download/asap-1.0.0.tgz"
+  },
+  "_from": "asap@>=1.0.0 <1.1.0",
+  "_npmVersion": "1.2.15",
+  "_npmUser": {
+    "name": "kriskowal",
+    "email": "kris.kowal@cixar.com"
+  },
+  "maintainers": [
+    {
+      "name": "kriskowal",
+      "email": "kris.kowal@cixar.com"
+    }
+  ],
+  "directories": {},
+  "publish_time": 1373406469724,
+  "_cnpm_publish_time": 1373406469724,
+  "_shasum": "b2a45da5fdfa20b0496fc3768cc27c12fa916a7d",
+  "_resolved": "https://registry.npm.taobao.org/asap/download/asap-1.0.0.tgz",
+  "readme": "ERROR: No README data found!"
+}

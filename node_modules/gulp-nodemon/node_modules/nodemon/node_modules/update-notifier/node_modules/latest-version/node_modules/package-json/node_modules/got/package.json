@@ -1,0 +1,80 @@
+{
+  "name": "got",
+  "version": "2.7.2",
+  "description": "Simplified HTTP/HTTPS requests",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sindresorhus/got"
+  },
+  "maintainers": [
+    {
+      "name": "sindresorhus",
+      "email": "sindresorhus@gmail.com"
+    },
+    {
+      "name": "floatdrop",
+      "email": "floatdrop@gmail.com"
+    }
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "tape test/test-*.js | tap-dot",
+    "coverage": "istanbul cover tape --report html -- test/test-*.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "http",
+    "https",
+    "get",
+    "got",
+    "url",
+    "uri",
+    "request",
+    "util",
+    "utility",
+    "simple"
+  ],
+  "dependencies": {
+    "duplexify": "^3.2.0",
+    "infinity-agent": "^1.0.0",
+    "is-stream": "^1.0.0",
+    "lowercase-keys": "^1.0.0",
+    "nested-error-stacks": "^1.0.0",
+    "object-assign": "^2.0.0",
+    "prepend-http": "^1.0.0",
+    "read-all-stream": "^2.0.0",
+    "statuses": "^1.2.1",
+    "timed-out": "^2.0.0"
+  },
+  "devDependencies": {
+    "from2-array": "0.0.3",
+    "istanbul": "^0.3.13",
+    "pem": "^1.4.4",
+    "tap-dot": "^1.0.0",
+    "tape": "^3.5.0"
+  },
+  "gitHead": "42294172307b042dfdb1432ebf24ed51cb7f897c",
+  "bugs": {
+    "url": "https://github.com/sindresorhus/got/issues"
+  },
+  "homepage": "https://github.com/sindresorhus/got",
+  "_id": "got@2.7.2",
+  "_shasum": "089cfe07c37590d6ab59ced31d5ff5b09f05145d",
+  "_from": "got@>=2.4.0 <3.0.0",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "floatdrop",
+    "email": "floatdrop@gmail.com"
+  },
+  "dist": {
+    "shasum": "089cfe07c37590d6ab59ced31d5ff5b09f05145d",
+    "tarball": "http://registry.npmjs.org/got/-/got-2.7.2.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/got/-/got-2.7.2.tgz"
+}

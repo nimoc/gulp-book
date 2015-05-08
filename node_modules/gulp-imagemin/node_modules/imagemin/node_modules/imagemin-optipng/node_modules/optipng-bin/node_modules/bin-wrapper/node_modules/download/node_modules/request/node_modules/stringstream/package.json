@@ -1,0 +1,52 @@
+{
+  "name": "stringstream",
+  "version": "0.0.4",
+  "description": "Encode and decode streams into string streams",
+  "author": {
+    "name": "Michael Hart",
+    "email": "michael.hart.au@gmail.com",
+    "url": "http://github.com/mhart"
+  },
+  "main": "stringstream.js",
+  "keywords": [
+    "string",
+    "stream",
+    "base64",
+    "gzip"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mhart/StringStream.git"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "_id": "stringstream@0.0.4",
+  "dist": {
+    "shasum": "0f0e3423f942960b5692ac324a57dd093bc41a92",
+    "size": 2030,
+    "noattachment": false,
+    "tarball": "http://registry.npm.taobao.org/stringstream/download/stringstream-0.0.4.tgz"
+  },
+  "_npmVersion": "1.2.0",
+  "_npmUser": {
+    "name": "hichaelmart",
+    "email": "michael.hart.au@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "hichaelmart",
+      "email": "michael.hart.au@gmail.com"
+    }
+  ],
+  "directories": {},
+  "publish_time": 1358749563334,
+  "_cnpm_publish_time": 1358749563334,
+  "_shasum": "0f0e3423f942960b5692ac324a57dd093bc41a92",
+  "_resolved": "https://registry.npm.taobao.org/stringstream/download/stringstream-0.0.4.tgz",
+  "_from": "stringstream@>=0.0.4 <0.1.0",
+  "bugs": {
+    "url": "https://github.com/mhart/StringStream/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "homepage": "https://github.com/mhart/StringStream"
+}
