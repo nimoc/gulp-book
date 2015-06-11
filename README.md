@@ -93,3 +93,6 @@ gulp 还可以做很多事，例如：
 5. markdown 转换为 html
 
 [开始阅读：安装 Node 和 gulp](chapter1.md)
+
+**相关内容：**
+- [FIS 入门指南](https://github.com/nimojs/fis-book)
