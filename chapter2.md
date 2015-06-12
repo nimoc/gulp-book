@@ -241,7 +241,7 @@ $gulp auto
 ```
 至此，我们完成了 gulp 压缩 js 文件的自动化代码编写。
 
-**注意：**使用 `gulp.watch` 后你的命令行会进入“运行”状态，此时你不可以在命令行进行其他操作。可通过 `Ctrl + C` 停止 gulp。(Mac 中使用 `control + C`)
+**注意：**使用 `gulp.watch` 后你的命令行会进入“运行”状态，此时你不可以在命令行进行其他操作。可通过 `Ctrl + C` 停止 gulp。
 
 > Mac 下使用 `control + C` 停止 gulp
 
