@@ -17,7 +17,7 @@ gulp 是基于 node 实现的，那么我们就需要先安装 node。
 ### 命令行
 在 Windows 中可按 <kbd>徽标键</kbd>（alt键左边）+ <kbd>R</kbd> 打开输入 `cmd` + <kbd>Enter</kbd> 打开命令行。
 
-### 终端
+### 终端(Mac)
 打开 Launchpad（像火箭一样的图标），在屏幕上方搜索框中输入 `终端` + <kbd>Enter</kbd> 打开终端。
 
 ### 查看 node 版本号
