@@ -9,7 +9,6 @@
 ----------
 
 本章将介绍
-- [colors](https://github.com/Marak/colors.js)
 - [gulp-watch-path](https://github.com/nimojs/gulp-watch-path)
 - [stream-combiner2](https://github.com/gulpjs/gulp/blob/master/docs/recipes/combining-streams-to-handle-errors.md)
 - [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps)
