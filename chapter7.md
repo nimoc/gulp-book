@@ -163,7 +163,7 @@ gulp.task('default', function () {
 配置 JS 任务
 --------
 ### gulp-uglify
-检测`src/js/`目录下的 js 文件修改后，压缩 `js/` 中所有 js 文件并输出到 `dist/css/` 中
+检测`src/js/`目录下的 js 文件修改后，压缩 `js/` 中所有 js 文件并输出到 `dist/js/` 中
 
 ```js
 var uglify = require('gulp-uglify')
