@@ -84,7 +84,7 @@ gulp.task('auto', function () {
 gulp.task('default', ['images', 'auto'])
 ```
 
-你可以访问 [gulp-imagemin](gulp-imagemin) 以查看更多用法。
+你可以访问 [gulp-imagemin](https://github.com/sindresorhus/gulp-imagemin) 以查看更多用法。
 
 ------
 
