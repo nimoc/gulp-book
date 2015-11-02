@@ -1,6 +1,10 @@
 使用 gulp 编译 Sass
 ==================
 
+## gulp-sass
+
+本章使用的是 ruby-sass 如果你不方便安装 ruby 或编译速度慢，建议使用 [gulp-sass](https://github.com/dlmanning/gulp-sass)
+
 请务必理解如下章节后阅读此章节：
 
 1. [安装 Node 和 gulp](chapter1.md)
