@@ -34,7 +34,7 @@ gulp 代码
 在命令行输入
 
 ```
-npm instal gulp-imagemin
+npm install gulp-imagemin
 ```
 
 安装成功后你会看到如下信息：(安装时间可能会比较长)
