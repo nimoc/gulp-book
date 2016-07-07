@@ -1,6 +1,9 @@
 使用 gulp 编译 Sass
 ==================
 
+> 无论是 `node-sass` 还是 `ruby-sass` 使用 npm 安装都非常的慢，甚至会装不上。及其不利于团队协作。建议使用 less 作为 css 预处理器。
+> 如果因为 less 不支持自定义函数选择用 sass 可以使用 [less-plugin-functions](https://github.com/seven-phases-max/less-plugin-functions) 让 less 支持自定义函数。
+
 ## gulp-sass
 
 本章使用的是 ruby-sass 如果你不方便安装 ruby 或编译速度慢，建议使用 [gulp-sass](https://github.com/dlmanning/gulp-sass)
