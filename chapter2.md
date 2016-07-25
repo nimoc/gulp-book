@@ -224,7 +224,7 @@ gulp.task('auto', function () {
 })
 ```
 
-接在在命令行输入 `gulp auto`，自动监听 `js/*.js` 文件的修改后压缩js。
+接着在命令行输入 `gulp auto`，自动监听 `js/*.js` 文件的修改后压缩js。
 
 ```
 $gulp auto
