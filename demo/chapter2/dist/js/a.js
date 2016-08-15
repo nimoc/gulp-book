@@ -1,1 +1,1 @@
-function demo(n){alert("--------\r\n"+n+"\r\n--------")}demo("Hi");
+function demo(n){alert("--------\r\n"+n+"\r\n--------")}demo("Hi git");
