@@ -26,6 +26,7 @@ gulp 代码
 
 当熟悉 [使用 gulp 压缩 JS](chapter2.md) 的方法后，配置压缩 CSS 的 gulp 代码就变得很轻松。
 
+> gulp-minify-css 已经被废弃请使用 [gulp-clean-css](https://github.com/scniro/gulp-clean-css)
 
 **一、安装 gulp-minify-css** 模块
 
