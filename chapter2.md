@@ -62,9 +62,9 @@ var uglify = require('gulp-uglify')
 ```js
 // 压缩 js 文件
 // 在命令行使用 gulp script 启动此任务
-gulp.task('script', function() {
+gulp.task('script', async function() {
     // 1. 找到文件
-    gulp.src('js/*.js')
+    await gulp.src('js/*.js')
     // 2. 压缩文件
         .pipe(uglify())
     // 3. 另存压缩后的文件
@@ -211,16 +211,16 @@ function demo(n){alert("--------\r\n"+n+"\r\n--------")}demo("Hi");
 在 `gulpfile.js` 中编写如下代码：
 ```
 // 监听文件修改，当文件被修改则执行 script 任务
-gulp.watch('js/*.js', ['script']);
+gulp.watch('js/*.js', gulp.series(['script']));
 ```
 
 但是没有命令可以运行 `gulp.watch()`，需要将 `gulp.watch()` 包含在一个任务中。
 
 ```
 // 在命令行使用 gulp auto 启动此任务
-gulp.task('auto', function () {
+gulp.task('auto', async function () {
     // 监听文件修改，当文件被修改则执行 script 任务
-    gulp.watch('js/*.js', ['script'])
+    await gulp.watch('js/*.js', gulp.series('script'))
 })
 ```
 
@@ -266,9 +266,9 @@ var uglify = require('gulp-uglify')
 
 // 压缩 js 文件
 // 在命令行使用 gulp script 启动此任务
-gulp.task('script', function() {
+gulp.task('script', async function() {
     // 1. 找到文件
-    gulp.src('js/*.js')
+    await gulp.src('js/*.js')
     // 2. 压缩文件
         .pipe(uglify())
     // 3. 另存压缩后的文件
@@ -276,15 +276,15 @@ gulp.task('script', function() {
 })
 
 // 在命令行使用 gulp auto 启动此任务
-gulp.task('auto', function () {
+gulp.task('auto', async function () {
     // 监听文件修改，当文件被修改则执行 script 任务
-    gulp.watch('js/*.js', ['script'])
+    await gulp.watch('js/*.js', gulp.series(['script']))
 })
 
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 script 任务和 auto 任务
-gulp.task('default', ['script', 'auto'])
+gulp.task('default', gulp.series(['script', 'auto']))
 ```
 
 去除注释后，你会发现只需要 11 行代码就可以让 gulp 自动监听 js 文件的修改后压缩代码。但是还有还有一些性能问题和缺少容错性，将在后面的章节详细说明。
