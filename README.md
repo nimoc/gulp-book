@@ -49,7 +49,7 @@ gulp 是基于 node 实现 Web 前端自动化开发的工具，利用它能够�
 // 压缩 JavaScript 文件
 gulp.task('script', function() {
     // 1. 找到
-    gulp.src('js/*.js')
+    return gulp.src('js/*.js')
     // 2. 压缩
         .pipe(uglify())
     // 3. 另存
