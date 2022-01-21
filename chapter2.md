@@ -28,7 +28,7 @@ gulp 代码
 gulp 的所有配置代码都写在 `gulpfile.js` 文件。
 
 **一、新建一个 `gulpfile.js` 文件**
-```
+```cmd
 chapter2
 └── gulpfile.js
 ```
@@ -64,7 +64,7 @@ var uglify = require('gulp-uglify')
 // 在命令行使用 gulp script 启动此任务
 gulp.task('script', function() {
     // 1. 找到文件
-    gulp.src('js/*.js')
+    return gulp.src('js/*.js')
     // 2. 压缩文件
         .pipe(uglify())
     // 3. 另存压缩后的文件
@@ -88,7 +88,7 @@ gulp.task('script', function() {
 例如我的 `gulpfile.js` 文件保存在 `C:\gulp-book\demo\chapter2\gulpfile.js`。
 
 那么就需要在命令行输入
-```
+```cmd
 cd C:\gulp-book\demo\chapter2
 ```
 
@@ -101,7 +101,7 @@ cd C:\gulp-book\demo\chapter2
 在控制台输入 `gulp 任务名` 可运行任务，此处我们输入 `gulp script` 回车。
 
 注意：输入 `gulp script` 后命令行将会提示错误信息
-```
+```cmd
 // 在命令行输入
 gulp script
 
@@ -120,7 +120,7 @@ Error: Cannot find module 'gulp-uglify'
 
 使用 npm 安装 `gulp-uglify` 到本地
 
-```
+```bash
 npm install gulp-uglify
 ```
 
@@ -138,7 +138,7 @@ chapter2 $
 在你的文件夹中会新增一个 `node_modules` 文件夹，这里面存放着 npm 安装的模块。
 
 目录结构：
-```
+```cmd
 ├── gulpfile.js
 └── node_modules
 	└── gulp-uglify
@@ -146,7 +146,7 @@ chapter2 $
 
 接着输入 `gulp script` 执行任务
 
-```
+```cmd
 gulp script
 [13:34:57] Using gulpfile ~/Documents/code/gulp-book/demo/chapter2/gulpfile.js
 [13:34:57] Starting 'script'...
@@ -161,7 +161,7 @@ gulp script
 
 创建 `a.js` 文件，并编写如下内容
 
-```
+```js
 // a.js
 function demo (msg) {
     alert('--------\r\n' + msg + '\r\n--------')
@@ -171,7 +171,7 @@ demo('Hi')
 ```
 
 目录结构：
-```
+```cmd
 ├── gulpfile.js
 ├──  js
 │	└── a.js
@@ -184,7 +184,7 @@ demo('Hi')
 gulp 会在命令行当前目录下创建 `dist/js/` 文件夹，并创建压缩后的 `a.js` 文件。
 
 目录结构：
-```
+```cmd
 ├── gulpfile.js
 ├──  js
 │	└── a.js
@@ -209,24 +209,24 @@ function demo(n){alert("--------\r\n"+n+"\r\n--------")}demo("Hi");
 可以使用 `gulp.watch(src, fn)` 检测指定目录下文件的修改后执行任务。
 
 在 `gulpfile.js` 中编写如下代码：
-```
+```js
 // 监听文件修改，当文件被修改则执行 script 任务
-gulp.watch('js/*.js', ['script']);
+gulp.watch('js/*.js', gulp.series(['script']));
 ```
 
 但是没有命令可以运行 `gulp.watch()`，需要将 `gulp.watch()` 包含在一个任务中。
 
-```
+```js
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 script 任务
-    gulp.watch('js/*.js', ['script'])
+    return gulp.watch('js/*.js', gulp.series('script'))
 })
 ```
 
 接着在命令行输入 `gulp auto`，自动监听 `js/*.js` 文件的修改后压缩js。
 
-```
+```cmd
 $gulp auto
 [21:09:45] Using gulpfile ~/Documents/code/gulp-book/demo/chapter2/gulpfile.js
 [21:09:45] Starting 'auto'...
@@ -235,7 +235,7 @@ $gulp auto
 
 此时修改 `js/a.js` 中的代码并保存。命令行将会出现提示，表示检测到文件修改并压缩文件。
 
-```
+```cmd
 [21:11:01] Starting 'script'...
 [21:11:01] Finished 'script' after 2.85 ms
 ```
@@ -250,7 +250,7 @@ $gulp auto
 增加如下代码
 
 ```js
-gulp.task('default', ['script', 'auto']);
+gulp.task('default', gulp.series(['script', 'auto']));
 ```
 
 此时你可以在命令行直接输入 `gulp` +回车，运行 `script` 和 `auto` 任务。
@@ -268,7 +268,7 @@ var uglify = require('gulp-uglify')
 // 在命令行使用 gulp script 启动此任务
 gulp.task('script', function() {
     // 1. 找到文件
-    gulp.src('js/*.js')
+    return gulp.src('js/*.js')
     // 2. 压缩文件
         .pipe(uglify())
     // 3. 另存压缩后的文件
@@ -278,13 +278,13 @@ gulp.task('script', function() {
 // 在命令行使用 gulp auto 启动此任务
 gulp.task('auto', function () {
     // 监听文件修改，当文件被修改则执行 script 任务
-    gulp.watch('js/*.js', ['script'])
+    return gulp.watch('js/*.js', gulp.series(['script']))
 })
 
 
 // 使用 gulp.task('default') 定义默认任务
 // 在命令行使用 gulp 启动 script 任务和 auto 任务
-gulp.task('default', ['script', 'auto'])
+gulp.task('default', gulp.series(['script', 'auto']))
 ```
 
 去除注释后，你会发现只需要 11 行代码就可以让 gulp 自动监听 js 文件的修改后压缩代码。但是还有还有一些性能问题和缺少容错性，将在后面的章节详细说明。
