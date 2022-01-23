@@ -10,7 +10,7 @@ gulp 是基于 node 实现 Web 前端自动化开发的工具，利用它能够�
 - [订阅本书](https://github.com/nimojs/gulp-book/issues/7)
 - [论坛](https://github.com/nimojs/gulp-book/issues)
 
-**因为 Node 的全局包安装都是在C盘，所有请在C盘使用 gulp 以方便熟悉 gulp **
+**因为 Node 的全局包安装都是在C盘，所有请在C盘使用 gulp 以方便熟悉 gulp**
 
 > 相关教程：[webpack-book](https://github.com/nimojs/webpack-book)
 
@@ -49,7 +49,7 @@ gulp 是基于 node 实现 Web 前端自动化开发的工具，利用它能够�
 // 压缩 JavaScript 文件
 gulp.task('script', function() {
     // 1. 找到
-    gulp.src('js/*.js')
+    return gulp.src('js/*.js')
     // 2. 压缩
         .pipe(uglify())
     // 3. 另存
