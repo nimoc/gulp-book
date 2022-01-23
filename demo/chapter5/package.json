@@ -5,7 +5,7 @@
   "main": "gulpfile.js",
   "license": "MIT",
   "devDependencies": {
-    "gulp": "^3.8.11",
+    "gulp": "^4.0.2",
     "gulp-less": "^3.0.2"
   }
 }
